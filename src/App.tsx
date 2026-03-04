@@ -406,8 +406,13 @@ export default function App() {
               <NavButton title="Regras da casa" icon={BookOpen} onClick={() => setView('rules')} />
               <NavButton title="Emergência" icon={AlertCircle} onClick={() => setView('emergencia')} color="bg-red-50" />
               
-              <div className="sm:col-span-2 mt-4">
-                <Card title="Wi-Fi" icon={Wifi}>
+            </motion.div>
+          )}
+
+          {view === 'flat' && (
+            <PageContainer key="flat" title="O Flat" onBack={() => setView('home')}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Card title="Wi-Fi" icon={Wifi} className="mb-0">
                   <div className="flex justify-between items-center p-3 bg-ipe-bg rounded-xl mb-2">
                     <div>
                       <p className="text-xs text-ipe-muted uppercase font-bold">Rede</p>
@@ -421,100 +426,95 @@ export default function App() {
                     </div>
                   </div>
                 </Card>
-              </div>
-            </motion.div>
-          )}
-
-          {view === 'flat' && (
-            <PageContainer key="flat" title="O Flat" onBack={() => setView('home')}>
-              <Card title="Características do Condomínio" icon={Building2}>
-                <div className="space-y-4 text-ipe-text">
-                  <p>O Flat Crystal 1701 oferece uma infraestrutura completa e serviços de alta qualidade para sua estadia:</p>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Portaria 24 horas com segurança monitorada.</li>
-                    <li>Piscina aquecida localizada no mezanino.</li>
-                    <li>Academia climatizada com funcionamento 24 horas.</li>
-                    <li>Lavanderia compartilhada (sistema OMO).</li>
-                    <li>Serviço de manobrista disponível para sua conveniência.</li>
-                    <li>Sala de reuniões (utilização cobrada à parte).</li>
-                    <li>Estação de recarga para veículos elétricos no estacionamento interno (utilização não inclusa no valor da reserva).</li>
-                    <li>Mercadinho localizado no mezanino.</li>
-                  </ul>
-                </div>
-              </Card>
-              <Card title="Regras de Convivência" icon={ShieldCheck}>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Não deixar roupas, placas ou cartazes nas sacadas dos apartamentos.</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>As visitas precisam se identificar na recepção e só adentrar após a biometria.</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Evitar barulhos excessivos, principalmente no período das 22h até as 08h.</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Somente os manobristas têm permissão para manobrar os carros.</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Carrinhos de compras apenas pelo elevador de serviço.</span>
-                  </li>
-                </ul>
-              </Card>
-
-              <Card title="Regras da Academia" icon={Dumbbell}>
-                <ul className="space-y-3 text-sm">
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Ao sair, desligue as luzes, o ar-condicionado e guarde os pesos no lugar.</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Não jogar os pesos no chão.</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Não solte os equipamentos de uma vez para evitar que batam.</span>
-                  </li>
-                  <li className="flex gap-2">
-                    <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Não é permitido crianças desacompanhadas.</span>
-                  </li>
-                </ul>
-              </Card>
-
-              <Card title="Piscina & Sauna" icon={Waves}>
-                <div className="space-y-4">
-                  <div className="p-3 bg-ipe-gold/5 rounded-xl border border-ipe-gold/10">
-                    <p className="text-xs text-ipe-muted uppercase font-bold mb-1">Horários</p>
-                    <p className="text-sm text-ipe-brown font-medium">Piscina: Segunda a Domingo • 06h às 23h</p>
-                    <p className="text-sm text-ipe-brown font-medium">Sauna: 09h às 21h (Solicitar chave na recepção)</p>
+                <Card title="Características do Condomínio" icon={Building2} className="mb-0">
+                  <div className="space-y-4 text-ipe-text">
+                    <p>O Flat Crystal 1701 oferece uma infraestrutura completa e serviços de alta qualidade para sua estadia:</p>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Portaria 24 horas com segurança monitorada.</li>
+                      <li>Piscina aquecida localizada no mezanino.</li>
+                      <li>Academia climatizada com funcionamento 24 horas.</li>
+                      <li>Lavanderia compartilhada (sistema OMO).</li>
+                      <li>Serviço de manobrista disponível para sua conveniência.</li>
+                      <li>Sala de reuniões (utilização cobrada à parte).</li>
+                      <li>Estação de recarga para veículos elétricos no estacionamento interno (utilização não inclusa no valor da reserva).</li>
+                      <li>Mercadinho localizado no mezanino.</li>
+                    </ul>
                   </div>
+                </Card>
+                <Card title="Regras de Convivência" icon={ShieldCheck} className="mb-0">
                   <ul className="space-y-3 text-sm">
                     <li className="flex gap-2">
                       <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Não é permitido criança desacompanhada.</span>
+                      <span>Não deixar roupas, placas ou cartazes nas sacadas dos apartamentos.</span>
                     </li>
                     <li className="flex gap-2">
                       <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Não é permitido garrafas nas bordas da piscina.</span>
+                      <span>As visitas precisam se identificar na recepção e só adentrar após a biometria.</span>
                     </li>
                     <li className="flex gap-2">
                       <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Não circular nas áreas comuns com trajes de banho.</span>
+                      <span>Evitar barulhos excessivos, principalmente no período das 22h até as 08h.</span>
                     </li>
                     <li className="flex gap-2">
                       <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Proibido barulho excessivo das 22h às 08h.</span>
+                      <span>Somente os manobristas têm permissão para manobrar os carros.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Carrinhos de compras apenas pelo elevador de serviço.</span>
                     </li>
                   </ul>
-                </div>
-              </Card>
+                </Card>
+
+                <Card title="Regras da Academia" icon={Dumbbell} className="mb-0">
+                  <ul className="space-y-3 text-sm">
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Ao sair, desligue as luzes, o ar-condicionado e guarde os pesos no lugar.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Não jogar os pesos no chão.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Não solte os equipamentos de uma vez para evitar que batam.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Não é permitido crianças desacompanhadas.</span>
+                    </li>
+                  </ul>
+                </Card>
+
+                <Card title="Piscina & Sauna" icon={Waves} className="mb-0">
+                  <div className="space-y-4">
+                    <div className="p-3 bg-ipe-gold/5 rounded-xl border border-ipe-gold/10">
+                      <p className="text-xs text-ipe-muted uppercase font-bold mb-1">Horários</p>
+                      <p className="text-sm text-ipe-brown font-medium">Piscina: Segunda a Domingo • 06h às 23h</p>
+                      <p className="text-sm text-ipe-brown font-medium">Sauna: 09h às 21h (Solicitar chave na recepção)</p>
+                    </div>
+                    <ul className="space-y-3 text-sm">
+                      <li className="flex gap-2">
+                        <Check size={16} className="text-ipe-gold shrink-0" />
+                        <span>Não é permitido criança desacompanhada.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <Check size={16} className="text-ipe-gold shrink-0" />
+                        <span>Não é permitido garrafas nas bordas da piscina.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <Check size={16} className="text-ipe-gold shrink-0" />
+                        <span>Não circular nas áreas comuns com trajes de banho.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <Check size={16} className="text-ipe-gold shrink-0" />
+                        <span>Proibido barulho excessivo das 22h às 08h.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </Card>
+              </div>
             </PageContainer>
           )}
 
