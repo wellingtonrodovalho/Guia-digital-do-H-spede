@@ -25,15 +25,33 @@ import {
   ShoppingBag,
   Stethoscope,
   Landmark,
+  Store,
   ArrowLeft,
   Dumbbell,
-  Waves
+  Waves,
+  Volume2,
+  CigaretteOff,
+  Trash2,
+  Bath,
+  PawPrint,
+  Sparkles,
+  Search
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 // --- Types ---
 
-type ViewState = 'home' | 'flat' | 'checkin' | 'guia' | 'checkout' | 'emergencia';
+interface Place {
+  id: number;
+  name: string;
+  category: string;
+  address: string;
+  icon: any;
+  mapsUrl: string;
+  wazeUrl: string;
+}
+
+type ViewState = 'home' | 'flat' | 'checkin' | 'guia' | 'checkout' | 'emergencia' | 'rules';
 
 // --- Components ---
 
@@ -122,6 +140,218 @@ const RecommendationItem = ({ name, type, distance, link, icon: Icon = MapPin }:
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<ViewState>('home');
+  const [activeCategory, setActiveCategory] = useState('TUDO');
+
+  const categories = [
+    'TUDO', 'RESTAURANTES', 'PANIFICADORA', 'FARMÁCIAS', 
+    'SUPERMERCADOS', 'SHOPPINGS', 'LAZER', 'BANCOS', 
+    'FEIRAS', 'EMERGÊNCIA MÉDICA'
+  ];
+
+  const places: Place[] = [
+    {
+      id: 1,
+      name: 'Carne de Sol 1008',
+      category: 'RESTAURANTES',
+      address: 'R. 1008, St. Pedro Ludovico, Goiânia',
+      icon: Utensils,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Carne+de+Sol+1008',
+      wazeUrl: 'https://waze.com/ul?q=Carne+de+Sol+1008'
+    },
+    {
+      id: 2,
+      name: 'Areião Restaurante',
+      category: 'RESTAURANTES',
+      address: 'Térreo do Condomínio',
+      icon: Utensils,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Areião+Restaurante',
+      wazeUrl: 'https://waze.com/ul?q=Areião+Restaurante'
+    },
+    {
+      id: 3,
+      name: 'Bistrô CHICA DOIDA',
+      category: 'RESTAURANTES',
+      address: 'Térreo do Condomínio',
+      icon: Utensils,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bistrô+CHICA+DOIDA',
+      wazeUrl: 'https://waze.com/ul?q=Bistrô+CHICA+DOIDA'
+    },
+    {
+      id: 4,
+      name: 'Park Pães',
+      category: 'PANIFICADORA',
+      address: 'St. Pedro Ludovico, Goiânia',
+      icon: Coffee,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Park+Pães',
+      wazeUrl: 'https://waze.com/ul?q=Park+Pães'
+    },
+    {
+      id: 5,
+      name: 'Drogasil',
+      category: 'FARMÁCIAS',
+      address: 'St. Pedro Ludovico, Goiânia',
+      icon: ShieldCheck,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Drogasil+Pedro+Ludovico',
+      wazeUrl: 'https://waze.com/ul?q=Drogasil+Pedro+Ludovico'
+    },
+    {
+      id: 6,
+      name: 'HUGO - Hospital Estadual',
+      category: 'EMERGÊNCIA MÉDICA',
+      address: 'St. Pedro Ludovico, Goiânia',
+      icon: Phone,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=HUGO+Hospital+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=HUGO+Hospital+Goiânia'
+    },
+    {
+      id: 7,
+      name: 'Costa Atacadão',
+      category: 'SUPERMERCADOS',
+      address: 'St. Pedro Ludovico, Goiânia',
+      icon: Search,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Costa+Atacadão+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=Costa+Atacadão+Goiânia'
+    },
+    {
+      id: 8,
+      name: 'SmartStore',
+      category: 'SUPERMERCADOS',
+      address: 'Mezanino do Condomínio',
+      icon: Search,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=SmartStore+Condomínio',
+      wazeUrl: 'https://waze.com/ul?q=SmartStore+Condomínio'
+    },
+    {
+      id: 9,
+      name: 'Goiânia Shopping',
+      category: 'SHOPPINGS',
+      address: 'Av. T-10, St. Bueno, Goiânia',
+      icon: ShoppingBag,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Goiânia+Shopping',
+      wazeUrl: 'https://waze.com/ul?q=Goiânia+Shopping'
+    },
+    {
+      id: 10,
+      name: 'Shopping Bougainville',
+      category: 'SHOPPINGS',
+      address: 'R. 9, St. Marista, Goiânia',
+      icon: ShoppingBag,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Shopping+Bougainville',
+      wazeUrl: 'https://waze.com/ul?q=Shopping+Bougainville'
+    },
+    {
+      id: 11,
+      name: 'Flamboyant Shopping',
+      category: 'SHOPPINGS',
+      address: 'Av. Dep. Jamel Cecílio, Goiânia',
+      icon: ShoppingBag,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Flamboyant+Shopping',
+      wazeUrl: 'https://waze.com/ul?q=Flamboyant+Shopping'
+    },
+    {
+      id: 12,
+      name: 'Parque Flamboyant',
+      category: 'LAZER',
+      address: 'Jardim Goiás, Goiânia',
+      icon: Landmark,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Parque+Flamboyant',
+      wazeUrl: 'https://waze.com/ul?q=Parque+Flamboyant'
+    },
+    {
+      id: 13,
+      name: 'Parque Vaca Brava',
+      category: 'LAZER',
+      address: 'St. Bueno, Goiânia',
+      icon: Landmark,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Parque+Vaca+Brava',
+      wazeUrl: 'https://waze.com/ul?q=Parque+Vaca+Brava'
+    },
+    {
+      id: 14,
+      name: 'Estádio Serra Dourada',
+      category: 'LAZER',
+      address: 'Jardim Goiás, Goiânia',
+      icon: Landmark,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Estádio+Serra+Dourada',
+      wazeUrl: 'https://waze.com/ul?q=Estádio+Serra+Dourada'
+    },
+    {
+      id: 15,
+      name: 'Centro Cultural Oscar Niemeyer',
+      category: 'LAZER',
+      address: 'Av. Dep. Jamel Cecílio, Goiânia',
+      icon: Landmark,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Centro+Cultural+Oscar+Niemeyer',
+      wazeUrl: 'https://waze.com/ul?q=Centro+Cultural+Oscar+Niemeyer'
+    },
+    {
+      id: 16,
+      name: 'Banco Itaú - Agência...',
+      category: 'BANCOS',
+      address: 'Goiânia, GO',
+      icon: Building2,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Banco+Itaú+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=Banco+Itaú+Goiânia'
+    },
+    {
+      id: 17,
+      name: 'Bradesco',
+      category: 'BANCOS',
+      address: 'Goiânia, GO',
+      icon: Building2,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Bradesco+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=Bradesco+Goiânia'
+    },
+    {
+      id: 18,
+      name: 'Caixa',
+      category: 'BANCOS',
+      address: 'Goiânia, GO',
+      icon: Building2,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Caixa+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=Caixa+Goiânia'
+    },
+    {
+      id: 19,
+      name: 'Banco do Brasil - Ag...',
+      category: 'BANCOS',
+      address: 'Goiânia, GO',
+      icon: Building2,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Banco+do+Brasil+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=Banco+do+Brasil+Goiânia'
+    },
+    {
+      id: 20,
+      name: 'Feira da Lua',
+      category: 'FEIRAS',
+      address: 'Praça Tamandaré, Goiânia (Sábado)',
+      icon: Store,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Feira+da+Lua+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=Feira+da+Lua+Goiânia'
+    },
+    {
+      id: 21,
+      name: 'Feira do Sol',
+      category: 'FEIRAS',
+      address: 'Praça do Sol, Goiânia (Domingo)',
+      icon: Store,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Feira+do+Sol+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=Feira+do+Sol+Goiânia'
+    },
+    {
+      id: 22,
+      name: 'Região da 44',
+      category: 'FEIRAS',
+      address: 'Setor Norte Ferroviário, Goiânia',
+      icon: Store,
+      mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Região+da+44+Goiânia',
+      wazeUrl: 'https://waze.com/ul?q=Região+da+44+Goiânia'
+    }
+  ];
+
+  const filteredPlaces = activeCategory === 'TUDO' 
+    ? places 
+    : places.filter(p => p.category === activeCategory);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
@@ -170,6 +400,7 @@ export default function App() {
               <NavButton title="Check-in" icon={Key} onClick={() => setView('checkin')} />
               <NavButton title="Guia Local" icon={Navigation} onClick={() => setView('guia')} />
               <NavButton title="Check-out" icon={LogOut} onClick={() => setView('checkout')} />
+              <NavButton title="Regras da casa" icon={BookOpen} onClick={() => setView('rules')} />
               <NavButton title="Emergência" icon={AlertCircle} onClick={() => setView('emergencia')} color="bg-red-50" />
               
               <div className="sm:col-span-2 mt-4">
@@ -204,6 +435,7 @@ export default function App() {
                     <li>Serviço de manobrista disponível para sua conveniência.</li>
                     <li>Sala de reuniões (utilização cobrada à parte).</li>
                     <li>Estação de recarga para veículos elétricos no estacionamento interno (utilização não inclusa no valor da reserva).</li>
+                    <li>Mercadinho localizado no mezanino.</li>
                   </ul>
                 </div>
               </Card>
@@ -285,31 +517,59 @@ export default function App() {
 
           {view === 'checkin' && (
             <PageContainer key="checkin" title="Check-in" onBack={() => setView('home')}>
-              <Card title="Instruções de Chegada" icon={Key}>
-                <div className="space-y-6">
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-ipe-gold text-white flex items-center justify-center font-bold shrink-0">1</div>
-                    <div>
-                      <h3 className="font-bold text-ipe-brown">Identificação</h3>
-                      <p className="text-sm text-ipe-muted">Ao chegar, identifique-se na portaria principal com seu documento original.</p>
-                    </div>
+              {/* Fechadura Inteligente */}
+              <div className="bg-ipe-brown rounded-2xl p-6 mb-6 text-white shadow-lg">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2 bg-white/10 rounded-lg">
+                    <Key size={24} className="text-ipe-gold" />
                   </div>
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-ipe-gold text-white flex items-center justify-center font-bold shrink-0">2</div>
-                    <div>
-                      <h3 className="font-bold text-ipe-brown">Acesso ao Bloco</h3>
-                      <p className="text-sm text-ipe-muted">O porteiro liberará sua entrada para o elevador social.</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-ipe-gold text-white flex items-center justify-center font-bold shrink-0">3</div>
-                    <div>
-                      <h3 className="font-bold text-ipe-brown">Fechadura Eletrônica</h3>
-                      <p className="text-sm text-ipe-muted">Digite a senha enviada no seu WhatsApp no teclado da porta e pressione #.</p>
-                    </div>
-                  </div>
+                  <h2 className="text-xl font-bold font-serif">Fechadura Inteligente</h2>
                 </div>
-              </Card>
+                
+                <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-4 text-center">
+                  <p className="text-xs uppercase tracking-widest opacity-60 mb-4">Estrutura da Senha (7 dígitos)</p>
+                  <div className="text-2xl font-bold tracking-[0.2em] text-ipe-gold mb-2">
+                    *DDD PREFIXO#
+                  </div>
+                  <p className="text-[10px] opacity-50 italic">Exemplo para (62) 98545...: *6298545#</p>
+                </div>
+
+                <div className="flex gap-3 p-4 bg-white/10 rounded-xl border border-white/10">
+                  <Info size={20} className="text-ipe-gold shrink-0" />
+                  <p className="text-sm leading-relaxed">
+                    Ao fechar a porta, <span className="font-bold">sempre trave a fechadura movendo a maçaneta para cima</span>, tanto ao entrar quanto ao sair.
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {/* Na recepção */}
+                <Card title="Na recepção">
+                  <p className="text-sm text-ipe-text leading-relaxed">
+                    Identifique-se e receba o cartão para ativar a energia do apartamento. Todos os hóspedes devem apresentar documentos de identificação.
+                  </p>
+                </Card>
+
+                {/* Como chegar */}
+                <a 
+                  href="https://maps.google.com/?q=Crystal+Place" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-white rounded-2xl p-6 shadow-sm border border-ipe-brown/5 flex items-center justify-between group hover:bg-ipe-gold/5 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:bg-blue-100 transition-colors">
+                      <MapPin size={24} />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-ipe-brown">Como chegar</h3>
+                      <p className="text-xs text-ipe-muted">Crystal Place</p>
+                    </div>
+                  </div>
+                  <ChevronRight size={20} className="text-ipe-muted group-hover:text-ipe-gold transition-transform group-hover:translate-x-1" />
+                </a>
+              </div>
+
               <div className="bg-ipe-gold/10 p-4 rounded-2xl border border-ipe-gold/20 flex gap-3">
                 <Info className="text-ipe-gold shrink-0" />
                 <p className="text-sm text-ipe-brown italic">O check-in inicia às 14:00. Caso precise entrar antes, consulte disponibilidade.</p>
@@ -319,46 +579,67 @@ export default function App() {
 
           {view === 'guia' && (
             <PageContainer key="guia" title="Guia Local" onBack={() => setView('home')}>
-              <div className="space-y-8">
-                <section>
-                  <h3 className="text-lg font-bold text-ipe-brown mb-4 flex items-center gap-2">
-                    <MapPin size={20} className="text-ipe-gold" /> Pontos Turísticos
-                  </h3>
-                  <RecommendationItem name="Parque das Flores" type="Lazer & Natureza" distance="1.2km" />
-                  <RecommendationItem name="Museu de Arte Moderna" type="Cultura" distance="2.5km" />
-                </section>
+              {/* Category Filters */}
+              <div className="flex flex-wrap gap-2 mb-8 justify-center">
+                {categories.map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    className={`px-4 py-2 rounded-full text-[10px] font-bold transition-all border ${
+                      activeCategory === cat 
+                        ? 'bg-ipe-brown text-white border-ipe-brown' 
+                        : 'bg-white text-ipe-muted border-ipe-brown/10 hover:border-ipe-gold'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
 
-                <section>
-                  <h3 className="text-lg font-bold text-ipe-brown mb-4 flex items-center gap-2">
-                    <Stethoscope size={20} className="text-ipe-gold" /> Farmácias Próximas
-                  </h3>
-                  <RecommendationItem name="Drogaria São Paulo" type="Farmácia 24h" distance="300m" icon={Stethoscope} />
-                  <RecommendationItem name="Pague Menos" type="Farmácia" distance="500m" icon={Stethoscope} />
-                </section>
+              {/* Places Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {filteredPlaces.map(place => (
+                  <div key={place.id} className="bg-white rounded-2xl p-4 shadow-sm border border-ipe-brown/5 flex items-center justify-between group">
+                    <div className="flex items-center gap-3 overflow-hidden">
+                      <div className="p-3 bg-ipe-gold/5 text-ipe-gold rounded-xl shrink-0">
+                        <place.icon size={20} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <h3 className="font-bold text-ipe-brown text-sm truncate">{place.name}</h3>
+                        <p className="text-[10px] text-ipe-muted uppercase font-bold tracking-wider">{place.category}</p>
+                        <p className="text-[10px] text-ipe-muted truncate">{place.address}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-col gap-2 shrink-0 ml-2">
+                      <a 
+                        href={place.mapsUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="p-2 bg-ipe-brown text-white rounded-lg hover:bg-ipe-gold transition-colors"
+                        title="Google Maps"
+                      >
+                        <Navigation size={16} />
+                      </a>
+                      <a 
+                        href={place.wazeUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="px-2 py-1 bg-[#00B0FF] text-white rounded-lg text-[8px] font-bold hover:bg-[#0091EA] transition-colors text-center"
+                      >
+                        WAZE
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-                <section>
-                  <h3 className="text-lg font-bold text-ipe-brown mb-4 flex items-center gap-2">
-                    <Landmark size={20} className="text-ipe-gold" /> Bancos
-                  </h3>
-                  <RecommendationItem name="Banco Itaú" type="Agência & Caixa" distance="400m" icon={Landmark} />
-                  <RecommendationItem name="Bradesco" type="Agência" distance="600m" icon={Landmark} />
-                </section>
-
-                <section>
-                  <h3 className="text-lg font-bold text-ipe-brown mb-4 flex items-center gap-2">
-                    <Utensils size={20} className="text-ipe-gold" /> Restaurantes
-                  </h3>
-                  <RecommendationItem name="Bistrô do Sol" type="Cozinha Contemporânea" distance="200m" icon={Utensils} />
-                  <RecommendationItem name="Pizzaria Napoli" type="Italiana" distance="450m" icon={Utensils} />
-                </section>
-
-                <section>
-                  <h3 className="text-lg font-bold text-ipe-brown mb-4 flex items-center gap-2">
-                    <ShoppingBag size={20} className="text-ipe-gold" /> Shoppings
-                  </h3>
-                  <RecommendationItem name="Shopping Crystal Center" type="Compras & Cinema" distance="800m" icon={ShoppingBag} />
-                  <RecommendationItem name="Plaza Mall" type="Compras" distance="1.5km" icon={ShoppingBag} />
-                </section>
+              {/* Dica do Anfitrião */}
+              <div className="mt-12 p-8 bg-white rounded-2xl border border-dashed border-ipe-brown/20 text-center">
+                <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-widest mb-2 italic">Dica do Anfitrião:</p>
+                <p className="text-lg font-serif text-ipe-brown italic">
+                  "O Bistrô Chica Doida tem a melhor picanha da região!"
+                </p>
               </div>
             </PageContainer>
           )}
@@ -437,6 +718,97 @@ export default function App() {
                     WhatsApp Suporte
                   </a>
                 </Card>
+              </div>
+            </PageContainer>
+          )}
+
+          {view === 'rules' && (
+            <PageContainer key="rules" title="Regras da casa" onBack={() => setView('home')}>
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-ipe-brown font-serif italic">"Mi casa su casa"</h2>
+                <p className="text-sm text-ipe-muted italic mt-1">Cuidem do nosso espaço como se fosse a casa de vocês!</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                      <Volume2 size={20} />
+                    </div>
+                    <h3 className="font-bold text-ipe-brown">Silêncio e Respeito</h3>
+                  </div>
+                  <p className="text-sm text-ipe-text leading-relaxed">
+                    Pedimos que seja silencioso e discreto, especialmente à noite. Não é permitido transitar sem camisa nas áreas comuns.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-red-50 text-red-600 rounded-lg">
+                      <CigaretteOff size={20} />
+                    </div>
+                    <h3 className="font-bold text-ipe-brown">Fumo Proibido</h3>
+                  </div>
+                  <p className="text-sm text-ipe-text leading-relaxed">
+                    Não é permitido fumar no interior do apartamento. O local possui sensores de gás e fumaça.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-orange-50 text-orange-600 rounded-lg">
+                      <Trash2 size={20} />
+                    </div>
+                    <h3 className="font-bold text-ipe-brown">Lixeiras</h3>
+                  </div>
+                  <p className="text-sm text-ipe-text leading-relaxed">
+                    Ficam no hall dos elevadores à esquerda, em um espaço com porta antes dos elevadores.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
+                      <Bath size={20} />
+                    </div>
+                    <h3 className="font-bold text-ipe-brown">Toalhas</h3>
+                  </div>
+                  <p className="text-sm text-ipe-text leading-relaxed">
+                    Não utilize toalhas para limpeza de maquiagem ou chão. Manchas irreparáveis serão cobradas para reposição.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-stone-50 text-stone-600 rounded-lg">
+                      <PawPrint size={20} />
+                    </div>
+                    <h3 className="font-bold text-ipe-brown">Animais de Estimação</h3>
+                  </div>
+                  <p className="text-sm text-ipe-text leading-relaxed">
+                    Pets são bem-vindos! Solicite o formulário online e atente-se ao regimento interno do condomínio.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2 bg-green-50 text-green-600 rounded-lg">
+                      <LogOut size={20} />
+                    </div>
+                    <h3 className="font-bold text-ipe-brown">Saída do Apartamento</h3>
+                  </div>
+                  <p className="text-sm text-ipe-text leading-relaxed">
+                    Sempre feche as janelas, desligue o Ar Condicionado e a TV ao se ausentar.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-orange-50 p-4 rounded-2xl border border-orange-100 flex gap-3">
+                <Info className="text-orange-500 shrink-0" />
+                <div>
+                  <p className="text-sm font-bold text-orange-800">Limpeza Adicional</p>
+                  <p className="text-sm text-orange-700">Troca de enxoval ou limpeza extra durante a estadia possui taxa de R$ 70,00.</p>
+                </div>
               </div>
             </PageContainer>
           )}
