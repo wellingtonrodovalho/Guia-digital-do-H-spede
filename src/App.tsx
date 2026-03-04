@@ -35,7 +35,10 @@ import {
   Bath,
   PawPrint,
   Sparkles,
-  Search
+  Search,
+  Star,
+  Power,
+  RotateCcw
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -646,70 +649,129 @@ export default function App() {
 
           {view === 'checkout' && (
             <PageContainer key="checkout" title="Check-out" onBack={() => setView('home')}>
-              <Card title="Instruções de Saída" icon={LogOut}>
-                <div className="space-y-4">
-                  <div className="flex gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-2 shrink-0" />
-                    <p className="text-sm text-ipe-text">O horário limite é às 11:00.</p>
+              {/* Horário Limite */}
+              <div className="bg-ipe-gold/20 border border-ipe-gold/30 rounded-2xl p-8 text-center mb-8">
+                <p className="text-[10px] font-bold text-ipe-gold uppercase tracking-[3px] mb-2">Horário Limite</p>
+                <h2 className="text-4xl font-serif font-bold text-ipe-brown">11h da manhã</h2>
+              </div>
+
+              {/* Checklist */}
+              <div className="mb-8">
+                <div className="flex items-center gap-2 mb-4 px-2">
+                  <Check size={20} className="text-ipe-brown" />
+                  <h3 className="font-serif font-bold text-ipe-brown">Checklist de Saída</h3>
+                </div>
+                
+                <div className="bg-white rounded-2xl shadow-sm border border-ipe-brown/5 overflow-hidden">
+                  <div className="flex items-center gap-4 p-5 border-b border-ipe-brown/5">
+                    <div className="p-2 bg-red-50 text-red-500 rounded-lg">
+                      <CigaretteOff size={18} />
+                    </div>
+                    <p className="text-sm font-medium text-ipe-brown">Desligar Ar Condicionado e TV</p>
                   </div>
-                  <div className="flex gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-2 shrink-0" />
-                    <p className="text-sm text-ipe-text">Desligue o ar-condicionado, luzes e eletrônicos.</p>
+                  
+                  <div className="flex items-center gap-4 p-5 border-b border-ipe-brown/5">
+                    <div className="p-2 bg-green-50 text-green-500 rounded-lg">
+                      <Trash2 size={18} />
+                    </div>
+                    <p className="text-sm font-medium text-ipe-brown">Retirar o lixo e descartar no hall</p>
                   </div>
-                  <div className="flex gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-2 shrink-0" />
-                    <p className="text-sm text-ipe-text">Certifique-se de que a porta esteja trancada ao sair.</p>
+                  
+                  <div className="flex items-center gap-4 p-5 border-b border-ipe-brown/5">
+                    <div className="p-2 bg-blue-50 text-blue-500 rounded-lg">
+                      <LogOut size={18} />
+                    </div>
+                    <p className="text-sm font-medium text-ipe-brown">Deixar o cartão na recepção (térreo)</p>
                   </div>
-                  <div className="flex gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-2 shrink-0" />
-                    <p className="text-sm text-ipe-text">Envie uma mensagem avisando que desocupou o flat.</p>
+                  
+                  <div className="flex items-center gap-4 p-5">
+                    <div className="p-2 bg-yellow-50 text-yellow-500 rounded-lg">
+                      <Star size={18} />
+                    </div>
+                    <p className="text-sm font-medium text-ipe-brown">Verificar se esqueceu objetos (ex: carregadores)</p>
                   </div>
                 </div>
-              </Card>
+              </div>
+
+              {/* Feedback Section */}
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-ipe-brown/5 text-center">
+                <h3 className="text-xl font-bold text-ipe-brown mb-2">Sua opinião é importante!</h3>
+                <p className="text-xs text-ipe-muted mb-8">Agradecemos sua atenção e feedback para melhorarmos sempre.</p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <a 
+                    href="https://wa.me/5562985451980?text=Olá! Gostaria de deixar um feedback sobre minha estadia no Flat 1701."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 py-4 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-colors shadow-lg shadow-green-500/20"
+                  >
+                    <MessageCircle size={20} />
+                    Enviar Observações via WhatsApp
+                  </a>
+                  
+                  <div className="bg-ipe-bg rounded-xl p-4 flex flex-col items-center justify-center border border-ipe-brown/5">
+                    <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-wider mb-1">Contato do Anfitrião</p>
+                    <p className="text-lg font-bold text-ipe-brown">(62) 98545-1980</p>
+                  </div>
+                </div>
+              </div>
             </PageContainer>
           )}
 
           {view === 'emergencia' && (
             <PageContainer key="emergencia" title="Emergência" onBack={() => setView('home')}>
-              <div className="space-y-4">
-                <a href="tel:190" className="flex items-center justify-between p-6 bg-white rounded-2xl border border-red-100 shadow-sm">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-red-50 text-red-600 rounded-xl">
-                      <ShieldCheck size={24} />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-ipe-brown">Polícia Militar</h3>
-                      <p className="text-sm text-ipe-muted">Ligue 190</p>
-                    </div>
+              <div className="space-y-6">
+                {/* Top Alert */}
+                <div className="bg-red-50 border border-red-100 p-4 rounded-2xl flex gap-3 items-center">
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
+                    <AlertCircle className="text-red-500" size={20} />
                   </div>
-                  <Phone size={20} className="text-red-400" />
-                </a>
-                <a href="tel:192" className="flex items-center justify-between p-6 bg-white rounded-2xl border border-red-100 shadow-sm">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-red-50 text-red-600 rounded-xl">
-                      <Stethoscope size={24} />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-ipe-brown">SAMU</h3>
-                      <p className="text-sm text-ipe-muted">Ligue 192</p>
-                    </div>
-                  </div>
-                  <Phone size={20} className="text-red-400" />
-                </a>
-                <a href="tel:193" className="flex items-center justify-between p-6 bg-white rounded-2xl border border-red-100 shadow-sm">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-red-50 text-red-600 rounded-xl">
-                      <Wind size={24} />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-ipe-brown">Bombeiros</h3>
-                      <p className="text-sm text-ipe-muted">Ligue 193</p>
-                    </div>
-                  </div>
-                  <Phone size={20} className="text-red-400" />
-                </a>
+                  <p className="text-xs text-red-800 font-medium leading-relaxed">
+                    Em caso de emergência, entre em contato imediatamente com os serviços competentes.
+                  </p>
+                </div>
+
+                {/* Contacts Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {[
+                    { name: 'Polícia Militar', phone: '190' },
+                    { name: 'SAMU', phone: '192' },
+                    { name: 'Corpo de Bombeiros', phone: '193' },
+                    { name: 'Polícia Federal', phone: '194' },
+                    { name: 'Polícia Civil', phone: '197' },
+                    { name: 'Guarda Municipal', phone: '153' },
+                    { name: 'Hospital Estadual (HUGO)', phone: '(62) 3201-4455' },
+                    { name: 'DEAM (Mulher)', phone: '(62) 3201-2801' },
+                    { name: 'DEAI (Idoso)', phone: '(62) 3201-1501' },
+                    { name: 'Ministério Público GO', phone: '(62) 3243-8000' },
+                  ].map((contact, idx) => (
+                    <a 
+                      key={idx}
+                      href={`tel:${contact.phone.replace(/\D/g, '')}`}
+                      className="bg-white p-4 rounded-2xl border border-ipe-brown/5 shadow-sm flex items-center justify-between group hover:border-red-200 transition-all"
+                    >
+                      <div>
+                        <h4 className="text-xs font-bold text-ipe-brown mb-1">{contact.name}</h4>
+                        <p className="text-sm font-bold text-red-600">{contact.phone}</p>
+                      </div>
+                      <div className="p-2 bg-red-50 text-red-600 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">
+                        <Phone size={16} />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+
+                {/* Bottom Info */}
+                <div className="bg-ipe-bg p-4 rounded-2xl flex gap-3 items-center border border-ipe-brown/5">
+                  <Info className="text-ipe-muted shrink-0" size={18} />
+                  <p className="text-[10px] text-ipe-muted italic">
+                    Estes números estão disponíveis 24h por dia para auxílio à população.
+                  </p>
+                </div>
+
+                {/* Host Contact (Kept for utility) */}
                 <Card title="Contato do Anfitrião" icon={Phone}>
-                  <p className="text-sm text-ipe-text mb-4">Para questões urgentes relacionadas ao flat:</p>
+                  <p className="text-sm text-ipe-text mb-4">Para questões não emergenciais relacionadas ao flat:</p>
                   <a 
                     href="https://wa.me/5562985451980" 
                     className="flex items-center justify-center gap-2 w-full py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
