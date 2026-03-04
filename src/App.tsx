@@ -25,7 +25,9 @@ import {
   ShoppingBag,
   Stethoscope,
   Landmark,
-  ArrowLeft
+  ArrowLeft,
+  Dumbbell,
+  Waves
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -193,14 +195,15 @@ export default function App() {
             <PageContainer key="flat" title="O Flat" onBack={() => setView('home')}>
               <Card title="Características do Condomínio" icon={Building2}>
                 <div className="space-y-4 text-ipe-text">
-                  <p>O Flat Crystal 1701 está localizado em um dos condomínios mais modernos da região, oferecendo:</p>
+                  <p>O Flat Crystal 1701 oferece uma infraestrutura completa e serviços de alta qualidade para sua estadia:</p>
                   <ul className="list-disc pl-5 space-y-2">
                     <li>Portaria 24 horas com segurança monitorada.</li>
-                    <li>Piscina na cobertura com vista panorâmica.</li>
-                    <li>Academia completa climatizada.</li>
+                    <li>Piscina aquecida localizada no mezanino.</li>
+                    <li>Academia climatizada com funcionamento 24 horas.</li>
                     <li>Lavanderia compartilhada (sistema OMO).</li>
-                    <li>Vaga de garagem rotativa.</li>
-                    <li>Espaço Coworking com Wi-Fi de alta velocidade.</li>
+                    <li>Serviço de manobrista disponível para sua conveniência.</li>
+                    <li>Sala de reuniões (utilização cobrada à parte).</li>
+                    <li>Estação de recarga para veículos elétricos no estacionamento interno (utilização não inclusa no valor da reserva).</li>
                   </ul>
                 </div>
               </Card>
@@ -208,17 +211,74 @@ export default function App() {
                 <ul className="space-y-3 text-sm">
                   <li className="flex gap-2">
                     <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Respeite o horário de silêncio das 22h às 08h.</span>
+                    <span>Não deixar roupas, placas ou cartazes nas sacadas dos apartamentos.</span>
                   </li>
                   <li className="flex gap-2">
                     <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Uso de áreas comuns requer agendamento prévio.</span>
+                    <span>As visitas precisam se identificar na recepção e só adentrar após a biometria.</span>
                   </li>
                   <li className="flex gap-2">
                     <Check size={16} className="text-ipe-gold shrink-0" />
-                    <span>Não é permitido estender roupas na varanda.</span>
+                    <span>Evitar barulhos excessivos, principalmente no período das 22h até as 08h.</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check size={16} className="text-ipe-gold shrink-0" />
+                    <span>Somente os manobristas têm permissão para manobrar os carros.</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check size={16} className="text-ipe-gold shrink-0" />
+                    <span>Carrinhos de compras apenas pelo elevador de serviço.</span>
                   </li>
                 </ul>
+              </Card>
+
+              <Card title="Regras da Academia" icon={Dumbbell}>
+                <ul className="space-y-3 text-sm">
+                  <li className="flex gap-2">
+                    <Check size={16} className="text-ipe-gold shrink-0" />
+                    <span>Ao sair, desligue as luzes, o ar-condicionado e guarde os pesos no lugar.</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check size={16} className="text-ipe-gold shrink-0" />
+                    <span>Não jogar os pesos no chão.</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check size={16} className="text-ipe-gold shrink-0" />
+                    <span>Não solte os equipamentos de uma vez para evitar que batam.</span>
+                  </li>
+                  <li className="flex gap-2">
+                    <Check size={16} className="text-ipe-gold shrink-0" />
+                    <span>Não é permitido crianças desacompanhadas.</span>
+                  </li>
+                </ul>
+              </Card>
+
+              <Card title="Piscina & Sauna" icon={Waves}>
+                <div className="space-y-4">
+                  <div className="p-3 bg-ipe-gold/5 rounded-xl border border-ipe-gold/10">
+                    <p className="text-xs text-ipe-muted uppercase font-bold mb-1">Horários</p>
+                    <p className="text-sm text-ipe-brown font-medium">Piscina: Segunda a Domingo • 06h às 23h</p>
+                    <p className="text-sm text-ipe-brown font-medium">Sauna: 09h às 21h (Solicitar chave na recepção)</p>
+                  </div>
+                  <ul className="space-y-3 text-sm">
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Não é permitido criança desacompanhada.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Não é permitido garrafas nas bordas da piscina.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Não circular nas áreas comuns com trajes de banho.</span>
+                    </li>
+                    <li className="flex gap-2">
+                      <Check size={16} className="text-ipe-gold shrink-0" />
+                      <span>Proibido barulho excessivo das 22h às 08h.</span>
+                    </li>
+                  </ul>
+                </div>
               </Card>
             </PageContainer>
           )}
@@ -370,7 +430,7 @@ export default function App() {
                 <Card title="Contato do Anfitrião" icon={Phone}>
                   <p className="text-sm text-ipe-text mb-4">Para questões urgentes relacionadas ao flat:</p>
                   <a 
-                    href="https://wa.me/5500000000000" 
+                    href="https://wa.me/5562985451980" 
                     className="flex items-center justify-center gap-2 w-full py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
                   >
                     <MessageCircle size={20} />
@@ -383,9 +443,51 @@ export default function App() {
         </AnimatePresence>
 
         {/* Footer */}
-        <footer className="text-center py-12 opacity-50">
-          <Logo size={30} className="mx-auto mb-2 grayscale" />
-          <p className="text-xs">© 2024 Flat Crystal 1701. Todos os direitos reservados.</p>
+        <footer className="mt-12 pt-12 pb-16 border-t border-ipe-brown/10">
+          <div className="text-center mb-10">
+            <h2 className="text-xl font-bold text-ipe-brown font-serif tracking-wider">WELLINGTON RODOVALHO FONSECA</h2>
+            <p className="text-xs text-ipe-muted uppercase tracking-[3px] mt-1">Corretor de Imóveis</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            {/* Documentação */}
+            <div>
+              <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-wider mb-3">Documentação</p>
+              <div className="space-y-1 text-xs text-ipe-brown">
+                <p><span className="font-bold">CAEPF:</span> 269.462.701/001-49</p>
+                <p><span className="font-bold">CRECI:</span> GO 42695</p>
+                <p><span className="font-bold">CNAI:</span> 54826</p>
+              </div>
+            </div>
+
+            {/* Digital */}
+            <div>
+              <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-wider mb-3">Digital</p>
+              <div className="space-y-1 text-xs text-ipe-brown">
+                <a href="https://www.alugagoias.com.br" target="_blank" rel="noopener noreferrer" className="block hover:text-ipe-gold transition-colors underline underline-offset-4">www.alugagoias.com.br</a>
+                <a href="mailto:contato@alugagoias.com.br" className="block hover:text-ipe-gold transition-colors underline underline-offset-4">contato@alugagoias.com.br</a>
+              </div>
+            </div>
+
+            {/* Contato Direto */}
+            <div className="flex flex-col items-center md:items-end">
+              <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-wider mb-3">Contato Direto</p>
+              <a 
+                href="https://wa.me/5562985451980" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full border border-green-100 text-sm font-bold hover:bg-green-100 transition-colors"
+              >
+                <MessageCircle size={16} />
+                (62) 98545-1980
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-12 text-center opacity-30">
+            <Logo size={24} className="mx-auto mb-2 grayscale" />
+            <p className="text-[10px]">© 2024 Flat Crystal 1701. Todos os direitos reservados.</p>
+          </div>
         </footer>
       </main>
 
@@ -412,7 +514,7 @@ export default function App() {
           animate={{ scale: 1 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          href="https://wa.me/5500000000000"
+          href="https://wa.me/5562985451980"
           className="w-14 h-14 bg-green-500 text-white rounded-full shadow-lg flex items-center justify-center"
           title="WhatsApp"
         >
