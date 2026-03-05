@@ -38,7 +38,10 @@ import {
   Search,
   Star,
   Power,
-  RotateCcw
+  RotateCcw,
+  Car,
+  Zap,
+  Users
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -405,115 +408,147 @@ export default function App() {
               <NavButton title="Check-out" icon={LogOut} onClick={() => setView('checkout')} />
               <NavButton title="Regras da casa" icon={BookOpen} onClick={() => setView('rules')} />
               <NavButton title="Emergência" icon={AlertCircle} onClick={() => setView('emergencia')} color="bg-red-50" />
-              
             </motion.div>
           )}
 
           {view === 'flat' && (
             <PageContainer key="flat" title="O Flat" onBack={() => setView('home')}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Card title="Wi-Fi" icon={Wifi} className="mb-0">
-                  <div className="flex justify-between items-center p-3 bg-ipe-bg rounded-xl mb-2">
-                    <div>
-                      <p className="text-xs text-ipe-muted uppercase font-bold">Rede</p>
-                      <p className="font-medium text-ipe-brown">Flat Crystal 1701 Guest</p>
+              {/* Wi-Fi Section - Prominent */}
+              <div className="bg-ipe-brown text-white rounded-3xl p-8 mb-8 shadow-xl relative overflow-hidden">
+                <div className="relative z-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-white/10 rounded-lg">
+                      <Wifi size={24} className="text-ipe-gold" />
+                    </div>
+                    <h2 className="text-xl font-bold font-serif">Conexão Wi-Fi</h2>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="bg-white/10 p-4 rounded-2xl border border-white/10 flex justify-between items-center group">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest opacity-60 mb-1">Rede</p>
+                        <p className="font-bold">Flat Crystal 1701 Guest</p>
+                      </div>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText('Flat Crystal 1701 Guest');
+                          alert('Rede copiada!');
+                        }}
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                      >
+                        <Copy size={16} className="opacity-40" />
+                      </button>
+                    </div>
+                    <div className="bg-white/10 p-4 rounded-2xl border border-white/10 flex justify-between items-center group">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest opacity-60 mb-1">Senha</p>
+                        <p className="font-bold">crystal_bem_vindo</p>
+                      </div>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText('crystal_bem_vindo');
+                          alert('Senha copiada!');
+                        }}
+                        className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                      >
+                        <Copy size={16} className="opacity-40" />
+                      </button>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center p-3 bg-ipe-bg rounded-xl">
-                    <div>
-                      <p className="text-xs text-ipe-muted uppercase font-bold">Senha</p>
-                      <p className="font-medium text-ipe-brown">crystal_bem_vindo</p>
-                    </div>
-                  </div>
-                </Card>
-                <Card title="Características do Condomínio" icon={Building2} className="mb-0">
-                  <div className="space-y-4 text-ipe-text">
-                    <p>O Flat Crystal 1701 oferece uma infraestrutura completa e serviços de alta qualidade para sua estadia:</p>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Portaria 24 horas com segurança monitorada.</li>
-                      <li>Piscina aquecida localizada no mezanino.</li>
-                      <li>Academia climatizada com funcionamento 24 horas.</li>
-                      <li>Lavanderia compartilhada (sistema OMO).</li>
-                      <li>Serviço de manobrista disponível para sua conveniência.</li>
-                      <li>Sala de reuniões (utilização cobrada à parte).</li>
-                      <li>Estação de recarga para veículos elétricos no estacionamento interno (utilização não inclusa no valor da reserva).</li>
-                      <li>Mercadinho localizado no mezanino.</li>
-                    </ul>
-                  </div>
-                </Card>
-                <Card title="Regras de Convivência" icon={ShieldCheck} className="mb-0">
-                  <ul className="space-y-3 text-sm">
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Não deixar roupas, placas ou cartazes nas sacadas dos apartamentos.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>As visitas precisam se identificar na recepção e só adentrar após a biometria.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Evitar barulhos excessivos, principalmente no período das 22h até as 08h.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Somente os manobristas têm permissão para manobrar os carros.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Carrinhos de compras apenas pelo elevador de serviço.</span>
-                    </li>
+                </div>
+                <Wifi className="absolute -right-10 -bottom-10 text-white/5 w-48 h-48 rotate-12" />
+              </div>
+
+              {/* Features Grid - Visual */}
+              <div className="mb-12">
+                <div className="flex items-center gap-2 mb-6 px-2">
+                  <Sparkles size={18} className="text-ipe-gold" />
+                  <h3 className="text-xs font-bold text-ipe-muted uppercase tracking-[3px]">Comodidades do Condomínio</h3>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {[
+                    { icon: ShieldCheck, label: 'Portaria 24h' },
+                    { icon: Waves, label: 'Piscina Aquecida' },
+                    { icon: Dumbbell, label: 'Academia 24h' },
+                    { icon: RotateCcw, label: 'Lavanderia OMO' },
+                    { icon: Car, label: 'Manobrista' },
+                    { icon: Users, label: 'Sala Reuniões' },
+                    { icon: Zap, label: 'Recarga Elétrica' },
+                    { icon: Store, label: 'Mercadinho' },
+                  ].map((item, i) => (
+                    <motion.div 
+                      key={i}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className="bg-white p-5 rounded-2xl border border-ipe-brown/5 shadow-sm flex flex-col items-center text-center gap-3 hover:shadow-md hover:border-ipe-gold/20 transition-all"
+                    >
+                      <div className="p-3 bg-ipe-gold/10 text-ipe-gold rounded-2xl">
+                        <item.icon size={24} />
+                      </div>
+                      <span className="text-[10px] font-bold text-ipe-brown leading-tight uppercase tracking-wider">{item.label}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Detailed Rules */}
+              <div className="space-y-6">
+                <Card title="Regras de Convivência" icon={ShieldCheck}>
+                  <ul className="space-y-4 text-sm">
+                    {[
+                      "Não deixar roupas ou objetos nas sacadas.",
+                      "Visitas devem se identificar na recepção.",
+                      "Silêncio obrigatório das 22h às 08h.",
+                      "Somente manobristas movem os veículos.",
+                      "Carrinhos de compras apenas no elevador de serviço."
+                    ].map((rule, i) => (
+                      <li key={i} className="flex gap-3 items-start">
+                        <div className="w-5 h-5 rounded-full bg-ipe-gold/10 flex items-center justify-center shrink-0 mt-0.5">
+                          <Check size={12} className="text-ipe-gold" />
+                        </div>
+                        <span className="text-ipe-text leading-relaxed">{rule}</span>
+                      </li>
+                    ))}
                   </ul>
                 </Card>
 
-                <Card title="Regras da Academia" icon={Dumbbell} className="mb-0">
-                  <ul className="space-y-3 text-sm">
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Ao sair, desligue as luzes, o ar-condicionado e guarde os pesos no lugar.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Não jogar os pesos no chão.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Não solte os equipamentos de uma vez para evitar que batam.</span>
-                    </li>
-                    <li className="flex gap-2">
-                      <Check size={16} className="text-ipe-gold shrink-0" />
-                      <span>Não é permitido crianças desacompanhadas.</span>
-                    </li>
-                  </ul>
-                </Card>
-
-                <Card title="Piscina & Sauna" icon={Waves} className="mb-0">
-                  <div className="space-y-4">
-                    <div className="p-3 bg-ipe-gold/5 rounded-xl border border-ipe-gold/10">
-                      <p className="text-xs text-ipe-muted uppercase font-bold mb-1">Horários</p>
-                      <p className="text-sm text-ipe-brown font-medium">Piscina: Segunda a Domingo • 06h às 23h</p>
-                      <p className="text-sm text-ipe-brown font-medium">Sauna: 09h às 21h (Solicitar chave na recepção)</p>
-                    </div>
-                    <ul className="space-y-3 text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <Card title="Academia" icon={Dumbbell} className="mb-0">
+                    <ul className="space-y-3 text-xs">
                       <li className="flex gap-2">
-                        <Check size={16} className="text-ipe-gold shrink-0" />
-                        <span>Não é permitido criança desacompanhada.</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
+                        <span>Desligue luzes e ar ao sair.</span>
                       </li>
                       <li className="flex gap-2">
-                        <Check size={16} className="text-ipe-gold shrink-0" />
-                        <span>Não é permitido garrafas nas bordas da piscina.</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
+                        <span>Guarde os pesos no lugar.</span>
                       </li>
                       <li className="flex gap-2">
-                        <Check size={16} className="text-ipe-gold shrink-0" />
-                        <span>Não circular nas áreas comuns com trajes de banho.</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <Check size={16} className="text-ipe-gold shrink-0" />
-                        <span>Proibido barulho excessivo das 22h às 08h.</span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
+                        <span>Proibido crianças desacompanhadas.</span>
                       </li>
                     </ul>
-                  </div>
-                </Card>
+                  </Card>
+
+                  <Card title="Piscina & Sauna" icon={Waves} className="mb-0">
+                    <div className="space-y-4">
+                      <div className="p-3 bg-ipe-bg rounded-xl border border-ipe-brown/5">
+                        <p className="text-[10px] text-ipe-muted font-bold uppercase mb-1">Horário Piscina</p>
+                        <p className="text-xs text-ipe-brown font-bold">06h às 23h (Diariamente)</p>
+                      </div>
+                      <ul className="space-y-2 text-xs">
+                        <li className="flex gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
+                          <span>Proibido garrafas de vidro.</span>
+                        </li>
+                        <li className="flex gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
+                          <span>Não circular em trajes de banho.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </Card>
+                </div>
               </div>
             </PageContainer>
           )}
