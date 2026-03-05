@@ -392,7 +392,7 @@ export default function App() {
         <p className="text-ipe-muted mt-2 italic">Guia do Hóspede</p>
       </header>
 
-      <main className="max-w-2xl mx-auto px-6">
+      <main className="max-w-6xl mx-auto px-6">
         <AnimatePresence mode="wait">
           {view === 'home' && (
             <motion.div
@@ -400,7 +400,7 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
             >
               <NavButton title="O Flat" icon={Building2} onClick={() => setView('flat')} />
               <NavButton title="Check-in" icon={Key} onClick={() => setView('checkin')} />
@@ -464,7 +464,7 @@ export default function App() {
                   <Sparkles size={18} className="text-ipe-gold" />
                   <h3 className="text-xs font-bold text-ipe-muted uppercase tracking-[3px]">Comodidades do Condomínio</h3>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
                   {[
                     { icon: ShieldCheck, label: 'Portaria 24h' },
                     { icon: Waves, label: 'Piscina Aquecida' },
@@ -512,7 +512,7 @@ export default function App() {
                   </ul>
                 </Card>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   <Card title="Academia" icon={Dumbbell} className="mb-0">
                     <ul className="space-y-3 text-xs">
                       <li className="flex gap-2">
@@ -580,7 +580,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 {/* Na recepção */}
                 <Card title="Na recepção">
                   <p className="text-sm text-ipe-text leading-relaxed">
@@ -635,7 +635,7 @@ export default function App() {
               </div>
 
               {/* Places Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredPlaces.map(place => (
                   <div key={place.id} className="bg-white rounded-2xl p-4 shadow-sm border border-ipe-brown/5 flex items-center justify-between group">
                     <div className="flex items-center gap-3 overflow-hidden">
@@ -733,7 +733,7 @@ export default function App() {
                 <h3 className="text-xl font-bold text-ipe-brown mb-2">Sua opinião é importante!</h3>
                 <p className="text-xs text-ipe-muted mb-8">Agradecemos sua atenção e feedback para melhorarmos sempre.</p>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <a 
                     href="https://wa.me/5562985451980?text=Olá! Gostaria de deixar um feedback sobre minha estadia no Flat 1701."
                     target="_blank"
@@ -826,7 +826,7 @@ export default function App() {
                 <p className="text-sm text-ipe-muted italic mt-1">Cuidem do nosso espaço como se fosse a casa de vocês!</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
