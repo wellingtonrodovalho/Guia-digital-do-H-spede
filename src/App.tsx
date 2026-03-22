@@ -569,7 +569,7 @@ export default function App() {
                   <div className="text-2xl font-bold tracking-[0.2em] text-ipe-gold mb-2">
                     *DDD PREFIXO#
                   </div>
-                  <p className="text-[10px] opacity-50 italic">Exemplo para (62) 98545...: *6298545#</p>
+                  <p className="text-[10px] opacity-50 italic">Exemplo para (62) 99151...: *6299151#</p>
                 </div>
 
                 <div className="flex gap-3 p-4 bg-white/10 rounded-xl border border-white/10">
@@ -735,7 +735,7 @@ export default function App() {
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <a 
-                    href="https://wa.me/5562985451980?text=Olá! Gostaria de deixar um feedback sobre minha estadia no Flat 1701."
+                    href="https://wa.me/5562991514568?text=Olá! Gostaria de deixar um feedback sobre minha estadia no Flat 1701."
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 py-4 bg-green-500 text-white rounded-xl font-bold hover:bg-green-600 transition-colors shadow-lg shadow-green-500/20"
@@ -746,7 +746,7 @@ export default function App() {
                   
                   <div className="bg-ipe-bg rounded-xl p-4 flex flex-col items-center justify-center border border-ipe-brown/5">
                     <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-wider mb-1">Contato do Anfitrião</p>
-                    <p className="text-lg font-bold text-ipe-brown">(62) 98545-1980</p>
+                    <p className="text-lg font-bold text-ipe-brown">(62) 99151-4568</p>
                   </div>
                 </div>
               </div>
@@ -808,7 +808,7 @@ export default function App() {
                 <Card title="Contato do Anfitrião" icon={Phone}>
                   <p className="text-sm text-ipe-text mb-4">Para questões não emergenciais relacionadas ao flat:</p>
                   <a 
-                    href="https://wa.me/5562985451980" 
+                    href="https://wa.me/5562991514568" 
                     className="flex items-center justify-center gap-2 w-full py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors"
                   >
                     <MessageCircle size={20} />
@@ -942,13 +942,13 @@ export default function App() {
             <div className="flex flex-col items-center md:items-end">
               <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-wider mb-3">Contato Direto</p>
               <a 
-                href="https://wa.me/5562985451980" 
+                href="https://wa.me/5562991514568" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-4 py-2 bg-green-50 text-green-700 rounded-full border border-green-100 text-sm font-bold hover:bg-green-100 transition-colors"
               >
                 <MessageCircle size={16} />
-                (62) 98545-1980
+                (62) 99151-4568
               </a>
             </div>
           </div>
@@ -983,7 +983,7 @@ export default function App() {
           animate={{ scale: 1 }}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          href="https://wa.me/5562985451980"
+          href="https://wa.me/5562991514568"
           className="w-14 h-14 bg-green-500 text-white rounded-full shadow-lg flex items-center justify-center"
           title="WhatsApp"
         >
