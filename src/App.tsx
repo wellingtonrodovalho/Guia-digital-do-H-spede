@@ -57,7 +57,7 @@ interface Place {
   wazeUrl: string;
 }
 
-type ViewState = 'home' | 'flat' | 'checkin' | 'guia' | 'checkout' | 'emergencia' | 'rules';
+type ViewState = 'home' | 'flat' | 'checkin' | 'guia' | 'checkout' | 'emergencia' | 'rules' | 'search';
 
 // --- Components ---
 
@@ -147,6 +147,42 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<ViewState>('home');
   const [activeCategory, setActiveCategory] = useState('TUDO');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const amenities = [
+    { icon: Wifi, label: 'Wi-Fi / Internet (Wifi)', category: 'COMODIDADES' },
+    { icon: ShieldCheck, label: 'Portaria 24h', category: 'COMODIDADES' },
+    { icon: Waves, label: 'Piscina Aquecida', category: 'COMODIDADES' },
+    { icon: Dumbbell, label: 'Academia 24h', category: 'COMODIDADES' },
+    { icon: RotateCcw, label: 'Lavanderia OMO', category: 'COMODIDADES' },
+    { icon: Car, label: 'Manobrista', category: 'COMODIDADES' },
+    { icon: Users, label: 'Sala Reuniões', category: 'COMODIDADES' },
+    { icon: Zap, label: 'Recarga Elétrica', category: 'COMODIDADES' },
+    { icon: Store, label: 'Mercadinho', category: 'COMODIDADES' },
+  ];
+
+  const emergencyContacts = [
+    { name: 'Polícia Militar', phone: '190' },
+    { name: 'SAMU', phone: '192' },
+    { name: 'Corpo de Bombeiros', phone: '193' },
+    { name: 'Polícia Federal', phone: '194' },
+    { name: 'Polícia Civil', phone: '197' },
+    { name: 'Guarda Municipal', phone: '153' },
+    { name: 'Hospital Estadual (HUGO)', phone: '(62) 3201-4455' },
+    { name: 'DEAM (Mulher)', phone: '(62) 3201-2801' },
+    { name: 'DEAI (Idoso)', phone: '(62) 3201-1501' },
+    { name: 'Ministério Público GO', phone: '(62) 3243-8000' },
+  ];
+
+  const houseRules = [
+    { title: 'Wi-Fi e Internet (Wifi)', content: 'Rede: Cond Crystal Place | Senha: crystal@2022' },
+    { title: 'Silêncio e Respeito', content: 'Pedimos que seja silencioso e discreto, especialmente à noite. Não é permitido transitar sem camisa nas áreas comuns.' },
+    { title: 'Fumo Proibido', content: 'Não é permitido fumar no interior do apartamento. O local possui sensores de gás e fumaça.' },
+    { title: 'Lixeiras', content: 'Ficam no hall dos elevadores à esquerda, em um espaço com porta antes dos elevadores.' },
+    { title: 'Toalhas', content: 'Não utilize toalhas para limpeza de maquiagem ou chão.' },
+    { title: 'Animais de Estimação', content: 'Pets são bem-vindos! Solicite o formulário online.' },
+    { title: 'Saída do Apartamento', content: 'Sempre feche as janelas, desligue o Ar Condicionado e a TV.' }
+  ];
 
   const categories = [
     'TUDO', 'RESTAURANTES', 'PANIFICADORA', 'FARMÁCIAS', 
@@ -390,6 +426,41 @@ export default function App() {
         <Logo size={80} className="mx-auto mb-6 bg-white p-3 rounded-full shadow-lg" />
         <h1 className="text-4xl font-bold text-ipe-brown font-serif">Flat Crystal 1701</h1>
         <p className="text-ipe-muted mt-2 italic">Guia do Hóspede</p>
+
+        {/* Search Bar */}
+        <div className="max-w-md mx-auto mt-8 px-4 relative">
+          <div className="relative group">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ipe-muted group-focus-within:text-ipe-gold transition-colors" size={20} />
+            <input 
+              type="text" 
+              placeholder="Pesquisar guia, regras, locais..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                if (e.target.value.trim().length > 0) {
+                  setView('search');
+                } else if (view === 'search') {
+                  setView('home');
+                }
+              }}
+              onFocus={() => {
+                if (searchQuery.trim().length > 0) setView('search');
+              }}
+              className="w-full pl-12 pr-10 py-4 bg-white rounded-2xl shadow-sm border border-ipe-brown/5 focus:outline-none focus:ring-2 focus:ring-ipe-gold/20 focus:border-ipe-gold transition-all text-ipe-brown placeholder:text-ipe-muted/60"
+            />
+            {searchQuery && (
+              <button 
+                onClick={() => {
+                  setSearchQuery('');
+                  if (view === 'search') setView('home');
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-ipe-muted hover:text-ipe-brown"
+              >
+                <Trash2 size={16} />
+              </button>
+            )}
+          </div>
+        </div>
       </header>
 
       <main className="max-w-6xl mx-auto px-6">
@@ -426,11 +497,11 @@ export default function App() {
                     <div className="bg-white/10 p-4 rounded-2xl border border-white/10 flex justify-between items-center group">
                       <div>
                         <p className="text-[10px] uppercase tracking-widest opacity-60 mb-1">Rede</p>
-                        <p className="font-bold">Flat Crystal 1701 Guest</p>
+                        <p className="font-bold">Cond Crystal Place</p>
                       </div>
                       <button 
                         onClick={() => {
-                          navigator.clipboard.writeText('Flat Crystal 1701 Guest');
+                          navigator.clipboard.writeText('Cond Crystal Place');
                           alert('Rede copiada!');
                         }}
                         className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -441,11 +512,11 @@ export default function App() {
                     <div className="bg-white/10 p-4 rounded-2xl border border-white/10 flex justify-between items-center group">
                       <div>
                         <p className="text-[10px] uppercase tracking-widest opacity-60 mb-1">Senha</p>
-                        <p className="font-bold">crystal_bem_vindo</p>
+                        <p className="font-bold">crystal@2022</p>
                       </div>
                       <button 
                         onClick={() => {
-                          navigator.clipboard.writeText('crystal_bem_vindo');
+                          navigator.clipboard.writeText('crystal@2022');
                           alert('Senha copiada!');
                         }}
                         className="p-2 hover:bg-white/10 rounded-lg transition-colors"
@@ -465,16 +536,7 @@ export default function App() {
                   <h3 className="text-xs font-bold text-ipe-muted uppercase tracking-[3px]">Comodidades do Condomínio</h3>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
-                  {[
-                    { icon: ShieldCheck, label: 'Portaria 24h' },
-                    { icon: Waves, label: 'Piscina Aquecida' },
-                    { icon: Dumbbell, label: 'Academia 24h' },
-                    { icon: RotateCcw, label: 'Lavanderia OMO' },
-                    { icon: Car, label: 'Manobrista' },
-                    { icon: Users, label: 'Sala Reuniões' },
-                    { icon: Zap, label: 'Recarga Elétrica' },
-                    { icon: Store, label: 'Mercadinho' },
-                  ].map((item, i) => (
+                  {amenities.map((item, i) => (
                     <motion.div 
                       key={i}
                       initial={{ opacity: 0, y: 10 }}
@@ -768,18 +830,7 @@ export default function App() {
 
                 {/* Contacts Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {[
-                    { name: 'Polícia Militar', phone: '190' },
-                    { name: 'SAMU', phone: '192' },
-                    { name: 'Corpo de Bombeiros', phone: '193' },
-                    { name: 'Polícia Federal', phone: '194' },
-                    { name: 'Polícia Civil', phone: '197' },
-                    { name: 'Guarda Municipal', phone: '153' },
-                    { name: 'Hospital Estadual (HUGO)', phone: '(62) 3201-4455' },
-                    { name: 'DEAM (Mulher)', phone: '(62) 3201-2801' },
-                    { name: 'DEAI (Idoso)', phone: '(62) 3201-1501' },
-                    { name: 'Ministério Público GO', phone: '(62) 3243-8000' },
-                  ].map((contact, idx) => (
+                  {emergencyContacts.map((contact, idx) => (
                     <a 
                       key={idx}
                       href={`tel:${contact.phone.replace(/\D/g, '')}`}
@@ -819,6 +870,149 @@ export default function App() {
             </PageContainer>
           )}
 
+          {view === 'search' && (
+            <PageContainer key="search" title="Resultados da Busca" onBack={() => {
+              setView('home');
+              setSearchQuery('');
+            }}>
+              <div className="space-y-8">
+                {/* Search Results Summary */}
+                <div className="px-2">
+                  <p className="text-sm text-ipe-muted">
+                    Mostrando resultados para: <span className="font-bold text-ipe-brown">"{searchQuery}"</span>
+                  </p>
+                </div>
+
+                {/* Categories of Results */}
+                {[
+                  {
+                    title: 'Guia Local',
+                    icon: Navigation,
+                    items: places.filter(p => 
+                      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      p.address.toLowerCase().includes(searchQuery.toLowerCase())
+                    ),
+                    render: (place: Place) => (
+                      <div key={place.id} className="bg-white rounded-2xl p-4 shadow-sm border border-ipe-brown/5 flex items-center justify-between group mb-3">
+                        <div className="flex items-center gap-3 overflow-hidden">
+                          <div className="p-3 bg-ipe-gold/5 text-ipe-gold rounded-xl shrink-0">
+                            <place.icon size={20} />
+                          </div>
+                          <div className="overflow-hidden">
+                            <h3 className="font-bold text-ipe-brown text-sm truncate">{place.name}</h3>
+                            <p className="text-[10px] text-ipe-muted uppercase font-bold tracking-wider">{place.category}</p>
+                          </div>
+                        </div>
+                        <button 
+                          onClick={() => {
+                            setActiveCategory(place.category);
+                            setView('guia');
+                          }}
+                          className="p-2 text-ipe-gold hover:bg-ipe-gold/10 rounded-lg transition-colors"
+                        >
+                          <ChevronRight size={20} />
+                        </button>
+                      </div>
+                    )
+                  },
+                  {
+                    title: 'Regras e Infos',
+                    icon: BookOpen,
+                    items: houseRules.filter(r => 
+                      r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      r.content.toLowerCase().includes(searchQuery.toLowerCase())
+                    ),
+                    render: (rule: any, i: number) => (
+                      <div key={i} className="bg-white p-4 rounded-xl border border-ipe-brown/5 mb-3 flex items-start gap-3">
+                        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+                          <Info size={16} />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-bold text-ipe-brown">{rule.title}</h4>
+                          <p className="text-xs text-ipe-text line-clamp-2 mt-1">{rule.content}</p>
+                          <button 
+                            onClick={() => setView(rule.title.toLowerCase().includes('wi-fi') ? 'flat' : 'rules')}
+                            className="text-[10px] text-ipe-gold font-bold uppercase tracking-wider mt-2 hover:underline"
+                          >
+                            Ver mais
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  },
+                  {
+                    title: 'Comodidades',
+                    icon: Building2,
+                    items: amenities.filter(a => a.label.toLowerCase().includes(searchQuery.toLowerCase())),
+                    render: (item: any, i: number) => (
+                      <div key={i} className="flex items-center justify-between p-4 bg-white rounded-xl mb-3 border border-ipe-brown/5">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-ipe-gold/10 text-ipe-gold rounded-lg">
+                            <item.icon size={18} />
+                          </div>
+                          <span className="text-sm font-bold text-ipe-brown">{item.label}</span>
+                        </div>
+                        <button onClick={() => setView('flat')} className="text-ipe-gold">
+                          <ChevronRight size={18} />
+                        </button>
+                      </div>
+                    )
+                  },
+                  {
+                    title: 'Emergência',
+                    icon: AlertCircle,
+                    items: emergencyContacts.filter(c => 
+                      c.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                      c.phone.toLowerCase().includes(searchQuery.toLowerCase())
+                    ),
+                    render: (contact: any, i: number) => (
+                      <div key={i} className="bg-white p-4 rounded-xl border border-red-50 mb-3 flex items-center justify-between">
+                        <div>
+                          <h4 className="text-sm font-bold text-ipe-brown">{contact.name}</h4>
+                          <p className="text-xs font-bold text-red-600">{contact.phone}</p>
+                        </div>
+                        <button onClick={() => setView('emergencia')} className="p-2 bg-red-50 text-red-600 rounded-full">
+                          <Phone size={14} />
+                        </button>
+                      </div>
+                    )
+                  }
+                ].filter(section => section.items.length > 0).map((section, idx) => (
+                  <div key={idx} className="animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <div className="flex items-center gap-2 mb-4 px-2">
+                      <section.icon size={18} className="text-ipe-gold" />
+                      <h3 className="text-xs font-bold text-ipe-muted uppercase tracking-[3px]">{section.title}</h3>
+                    </div>
+                    <div>
+                      {section.items.map((item, i) => section.render(item, i))}
+                    </div>
+                  </div>
+                ))}
+
+                {/* No results */}
+                {places.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || p.category.toLowerCase().includes(searchQuery.toLowerCase()) || p.address.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 &&
+                 houseRules.filter(r => r.title.toLowerCase().includes(searchQuery.toLowerCase()) || r.content.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 &&
+                 amenities.filter(a => a.label.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 &&
+                 emergencyContacts.filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
+                   <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-ipe-brown/10">
+                     <Search size={40} className="mx-auto text-ipe-muted/20 mb-4" />
+                     <p className="text-ipe-muted">Nenhum resultado encontrado para sua busca.</p>
+                     <button 
+                      onClick={() => {
+                        setSearchQuery('');
+                        setView('home');
+                      }}
+                      className="mt-4 text-ipe-gold font-bold text-sm uppercase tracking-wider hover:underline"
+                    >
+                      Voltar ao Início
+                    </button>
+                   </div>
+                 )}
+              </div>
+            </PageContainer>
+          )}
+
           {view === 'rules' && (
             <PageContainer key="rules" title="Regras da casa" onBack={() => setView('home')}>
               <div className="text-center mb-8">
@@ -827,77 +1021,24 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                      <Volume2 size={20} />
+                {houseRules.map((rule, idx) => (
+                  <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="p-2 bg-ipe-gold/10 text-ipe-gold rounded-lg">
+                        {idx === 0 && <Volume2 size={20} />}
+                        {idx === 1 && <CigaretteOff size={20} />}
+                        {idx === 2 && <Trash2 size={20} />}
+                        {idx === 3 && <Bath size={20} />}
+                        {idx === 4 && <PawPrint size={20} />}
+                        {idx === 5 && <LogOut size={20} />}
+                      </div>
+                      <h3 className="font-bold text-ipe-brown">{rule.title}</h3>
                     </div>
-                    <h3 className="font-bold text-ipe-brown">Silêncio e Respeito</h3>
+                    <p className="text-sm text-ipe-text leading-relaxed">
+                      {rule.content}
+                    </p>
                   </div>
-                  <p className="text-sm text-ipe-text leading-relaxed">
-                    Pedimos que seja silencioso e discreto, especialmente à noite. Não é permitido transitar sem camisa nas áreas comuns.
-                  </p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-red-50 text-red-600 rounded-lg">
-                      <CigaretteOff size={20} />
-                    </div>
-                    <h3 className="font-bold text-ipe-brown">Fumo Proibido</h3>
-                  </div>
-                  <p className="text-sm text-ipe-text leading-relaxed">
-                    Não é permitido fumar no interior do apartamento. O local possui sensores de gás e fumaça.
-                  </p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-orange-50 text-orange-600 rounded-lg">
-                      <Trash2 size={20} />
-                    </div>
-                    <h3 className="font-bold text-ipe-brown">Lixeiras</h3>
-                  </div>
-                  <p className="text-sm text-ipe-text leading-relaxed">
-                    Ficam no hall dos elevadores à esquerda, em um espaço com porta antes dos elevadores.
-                  </p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-                      <Bath size={20} />
-                    </div>
-                    <h3 className="font-bold text-ipe-brown">Toalhas</h3>
-                  </div>
-                  <p className="text-sm text-ipe-text leading-relaxed">
-                    Não utilize toalhas para limpeza de maquiagem ou chão. Manchas irreparáveis serão cobradas para reposição.
-                  </p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-stone-50 text-stone-600 rounded-lg">
-                      <PawPrint size={20} />
-                    </div>
-                    <h3 className="font-bold text-ipe-brown">Animais de Estimação</h3>
-                  </div>
-                  <p className="text-sm text-ipe-text leading-relaxed">
-                    Pets são bem-vindos! Solicite o formulário online e atente-se ao regimento interno do condomínio.
-                  </p>
-                </div>
-
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-ipe-brown/5">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 bg-green-50 text-green-600 rounded-lg">
-                      <LogOut size={20} />
-                    </div>
-                    <h3 className="font-bold text-ipe-brown">Saída do Apartamento</h3>
-                  </div>
-                  <p className="text-sm text-ipe-text leading-relaxed">
-                    Sempre feche as janelas, desligue o Ar Condicionado e a TV ao se ausentar.
-                  </p>
-                </div>
+                ))}
               </div>
 
               <div className="bg-orange-50 p-4 rounded-2xl border border-orange-100 flex gap-3">
