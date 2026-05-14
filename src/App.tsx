@@ -554,133 +554,151 @@ export default function App() {
                     <span className="text-[9px] font-bold uppercase tracking-tight">Academia, Lavanderia e Mercadinho 24h</span>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-9 gap-4">
-                  {amenities.map((item, i) => (
-                    <motion.div 
-                      key={i}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className="bg-white p-5 rounded-2xl border border-ipe-brown/5 shadow-sm flex flex-col items-center text-center gap-3 hover:shadow-md hover:border-ipe-gold/20 transition-all"
-                    >
-                      <div className="p-3 bg-ipe-gold/10 text-ipe-gold rounded-2xl">
-                        <item.icon size={24} />
-                      </div>
-                      <span className="text-[10px] font-bold text-ipe-brown leading-tight uppercase tracking-wider">{item.label}</span>
-                    </motion.div>
-                  ))}
-                </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-9 gap-6">
+                    {amenities.map((item, i) => (
+                      <motion.div 
+                        key={i}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        className="flex flex-col items-center text-center gap-3 group"
+                      >
+                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-ipe-gold border border-ipe-gold/5 shadow-sm group-hover:bg-ipe-gold group-hover:text-white transition-all duration-300">
+                          <item.icon size={24} />
+                        </div>
+                        <span className="text-[10px] font-bold text-ipe-brown leading-tight uppercase tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">{item.label}</span>
+                      </motion.div>
+                    ))}
+                  </div>
               </div>
 
-              {/* Detailed Rules */}
-              <div className="space-y-6">
-                <Card title="Regras de Convivência" icon={ShieldCheck}>
-                  <ul className="space-y-4 text-sm">
+              <div className="space-y-16">
+                {/* Rules Section */}
+                <div className="px-2">
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-10 h-10 bg-ipe-brown text-white rounded-xl flex items-center justify-center">
+                      <ShieldCheck size={20} />
+                    </div>
+                    <h2 className="text-xl font-bold text-ipe-brown font-serif">Regras de Convivência</h2>
+                  </div>
+                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-5">
                     {[
+                      "Voltagem do apartamento: 220V.",
+                      "Não deixar lixo nos corredores.",
+                      "Proibido pendurar roupas nas janelas.",
                       "Não deixar roupas ou objetos nas sacadas.",
                       "Visitas devem se identificar na recepção.",
                       "Silêncio obrigatório das 22h às 08h.",
                       "Somente manobristas movem os veículos.",
                       "Carrinhos de compras apenas no elevador de serviço."
                     ].map((rule, i) => (
-                      <li key={i} className="flex gap-3 items-start">
+                      <li key={i} className="flex gap-4 items-start">
                         <div className="w-5 h-5 rounded-full bg-ipe-gold/10 flex items-center justify-center shrink-0 mt-0.5">
                           <Check size={12} className="text-ipe-gold" />
                         </div>
-                        <span className="text-ipe-text leading-relaxed">{rule}</span>
+                        <span className="text-ipe-text leading-relaxed text-sm">
+                          {rule.includes('220V') ? <span className="font-bold text-red-600">{rule}</span> : rule}
+                        </span>
                       </li>
                     ))}
                   </ul>
-                </Card>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  <Card title="Academia" icon={Dumbbell} className="mb-0">
-                    <ul className="space-y-3 text-xs">
-                      <li className="flex gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
-                        <span>Funcionamento 24 Horas.</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
-                        <span>Desligue luzes e ar ao sair.</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
-                        <span>Guarde os pesos no lugar.</span>
-                      </li>
-                      <li className="flex gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
-                        <span>Proibido crianças desacompanhadas.</span>
-                      </li>
-                    </ul>
-                  </Card>
-
-                  <Card title="Piscina & Sauna" icon={Waves} className="mb-0">
-                    <div className="space-y-4">
-                      <div className="p-3 bg-ipe-bg rounded-xl border border-ipe-brown/5">
-                        <p className="text-[10px] text-ipe-muted font-bold uppercase mb-1">Horário Piscina</p>
-                        <p className="text-xs text-ipe-brown font-bold">06h às 23h (Diariamente)</p>
-                      </div>
-                      <ul className="space-y-2 text-xs">
-                        <li className="flex gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
-                          <span>Proibido garrafas de vidro.</span>
-                        </li>
-                        <li className="flex gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
-                          <span>Não circular em trajes de banho.</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </Card>
                 </div>
 
-                {/* Guia da Cafeteira */}
-                <div className="mt-8">
-                  <Card title="Guia da Cafeteira (Cápsulas Três)" icon={Coffee}>
-                    <div className="space-y-6">
-                      <p className="text-[11px] text-ipe-muted leading-relaxed">Siga as instruções abaixo para preparar seu café na máquina Três Corações:</p>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                {/* Amenities Section */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 px-2">
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Dumbbell size={20} className="text-ipe-gold" />
+                      <h3 className="font-bold text-ipe-brown uppercase tracking-widest text-xs">Academia</h3>
+                    </div>
+                    <ul className="space-y-3">
+                      {[
+                        "Funcionamento 24 Horas.",
+                        "Desligue luzes e ar ao sair.",
+                        "Guarde os pesos no lugar.",
+                        "Proibido crianças desacompanhadas."
+                      ].map((item, i) => (
+                        <li key={i} className="flex items-center gap-2 text-xs text-ipe-text">
+                          <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Waves size={20} className="text-ipe-gold" />
+                      <h3 className="font-bold text-ipe-brown uppercase tracking-widest text-xs">Piscina & Sauna</h3>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="py-3 border-b border-ipe-gold/10">
+                        <p className="text-[10px] text-ipe-muted font-bold uppercase mb-1">Horário Piscina</p>
+                        <p className="text-sm text-ipe-brown font-bold tracking-tight">06h às 23h (Diariamente)</p>
+                      </div>
+                      <ul className="space-y-2">
                         {[
-                          { step: 1, title: 'Energia', text: 'Tomada 220V. Aguarde aquecer.', img: 'input_file_4.png', icon: Zap, color: '#EAB308' },
-                          { step: 2, title: 'Água', text: 'Use água filtrada no reservatório.', img: 'input_file_7.png', icon: Droplets, color: '#3B82F6' },
-                          { step: 3, title: 'Abrir', text: 'Levante a alavanca para abrir.', img: 'input_file_3.png', icon: ArrowUpCircle, color: '#64748B' },
-                          { step: 4, title: 'Cápsula', text: 'Insira a cápsula Três no slot.', img: 'input_file_6.png', icon: Hexagon, color: '#92400E' },
-                          { step: 5, title: 'Fechar', text: 'Abaixe para perfurar a cápsula.', img: 'input_file_1.png', icon: ArrowDownCircle, color: '#334155' },
-                          { step: 6, title: 'Preparo', text: 'Selecione o botão da cor da cápsula.', img: 'input_file_2.png', icon: Coffee, color: '#059669' }
-                        ].map((s, i) => (
-                          <div key={i} className="flex flex-col gap-2 group">
-                            <div className="flex items-center gap-2">
-                              <span 
-                                className="w-5 h-5 text-white rounded-full flex items-center justify-center text-[9px] font-bold shadow-sm"
-                                style={{ backgroundColor: s.color }}
-                              >
-                                {s.step}
-                              </span>
-                              <h4 className="text-[11px] font-bold text-ipe-brown uppercase tracking-wider">{s.title}</h4>
-                            </div>
-                            <div 
-                              className="relative aspect-video rounded-xl overflow-hidden shadow-sm border border-transparent bg-ipe-bg flex items-center justify-center transition-all duration-300"
-                              style={{ borderBottom: `2px solid ${s.color}20` }}
-                            >
-                              <img 
-                                src={s.img} 
-                                alt={s.title} 
-                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                                referrerPolicy="no-referrer" 
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  e.currentTarget.parentElement?.classList.add('flex-col');
-                                }}
-                              />
-                              <s.icon size={24} className="absolute opacity-10" style={{ color: s.color }} />
-                            </div>
-                            <p className="text-[10px] text-ipe-muted leading-tight">{s.text}</p>
-                          </div>
+                          "Proibido garrafas de vidro.",
+                          "Não circular em trajes de banho."
+                        ].map((item, i) => (
+                          <li key={i} className="flex items-center gap-2 text-xs text-ipe-text">
+                            <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold shrink-0" />
+                            <span>{item}</span>
+                          </li>
                         ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Coffee Guide (Fluid Sequence) */}
+                <div className="pt-12 border-t border-ipe-gold/10">
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 bg-ipe-gold/10 text-ipe-gold rounded-xl flex items-center justify-center">
+                        <Coffee size={20} />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-ipe-brown font-serif tracking-tight">Modo de Preparo</h3>
+                        <p className="text-[10px] text-ipe-muted font-bold mt-1 uppercase tracking-widest opacity-60">Cafeteira Três Corações</p>
                       </div>
                     </div>
-                  </Card>
+                    <div className="px-3 py-1 bg-red-50 text-red-600 rounded-full border border-red-100 flex items-center gap-2 self-start md:self-center">
+                      <Zap size={10} className="fill-current" />
+                      <span className="text-[9px] font-bold uppercase tracking-tight">Tomada 220V</span>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[
+                      { step: 1, title: 'ENERGIA', text: 'Conecte na tomada 220V.', icon: Zap, color: '#EAB308' },
+                      { step: 2, title: 'ÁGUAS', text: 'Água filtrada no reservatório.', icon: Droplets, color: '#3B82F6' },
+                      { step: 3, title: 'ABRIR', text: 'Levante a alavanca superior.', icon: ArrowUpCircle, color: '#64748B' },
+                      { step: 4, title: 'CÁPSULA', text: 'Insira a cápsula no slot.', icon: Hexagon, color: '#92400E' },
+                      { step: 5, title: 'FECHAR', text: 'Abaixe para perfurar.', icon: ArrowDownCircle, color: '#334155' },
+                      { step: 6, title: 'PREPARO', text: 'Botão da cor da cápsula.', icon: Coffee, color: '#059669' }
+                    ].map((s, i) => (
+                      <div key={i} className="flex items-center gap-5 p-5 bg-white rounded-[24px] border border-ipe-brown/5 shadow-sm hover:shadow-md transition-all group">
+                        <div 
+                          className="w-10 h-10 rounded-[14px] flex items-center justify-center text-white font-black text-sm shrink-0 shadow-lg shadow-black/5"
+                          style={{ backgroundColor: s.color }}
+                        >
+                          {s.step}
+                        </div>
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <s.icon size={12} style={{ color: s.color }} />
+                            <h4 className="text-[11px] font-black text-ipe-brown tracking-widest leading-none">
+                              {s.title}
+                            </h4>
+                          </div>
+                          <p className="text-[11px] text-ipe-muted leading-tight font-medium opacity-80">
+                            {s.text}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </PageContainer>
