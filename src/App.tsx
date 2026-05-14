@@ -41,7 +41,11 @@ import {
   RotateCcw,
   Car,
   Zap,
-  Users
+  Users,
+  Droplets,
+  ArrowUpCircle,
+  ArrowDownCircle,
+  Hexagon
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -154,11 +158,11 @@ export default function App() {
     { icon: ShieldCheck, label: 'Portaria 24h', category: 'COMODIDADES' },
     { icon: Waves, label: 'Piscina Aquecida', category: 'COMODIDADES' },
     { icon: Dumbbell, label: 'Academia 24h', category: 'COMODIDADES' },
-    { icon: RotateCcw, label: 'Lavanderia OMO', category: 'COMODIDADES' },
+    { icon: RotateCcw, label: 'Lavanderia 24h', category: 'COMODIDADES' },
     { icon: Car, label: 'Manobrista', category: 'COMODIDADES' },
     { icon: Users, label: 'Sala Reuniões', category: 'COMODIDADES' },
     { icon: Zap, label: 'Recarga Elétrica', category: 'COMODIDADES' },
-    { icon: Store, label: 'Mercadinho', category: 'COMODIDADES' },
+    { icon: Store, label: 'Mercadinho 24h', category: 'COMODIDADES' },
   ];
 
   const emergencyContacts = [
@@ -175,7 +179,9 @@ export default function App() {
   ];
 
   const houseRules = [
-    { title: 'Wi-Fi e Internet (Wifi)', content: 'Rede: Cond Crystal Place | Senha: crystal@2022' },
+    { title: 'Wi-Fi e Internet (Wifi)', content: 'Rede: Cond Crystal Place | Senha: crystal@2022 | Tensão Principal: 220V' },
+    { title: 'Cafeteira Três Corações', content: 'Guia passo-a-passo para utilização da cafeteira de cápsulas. Atenção: Voltagem 220V.' },
+    { title: 'Voltagem 220V', content: 'Todas as tomadas do flat são 220V. Verifique seus aparelhos antes de ligar para evitar danos.' },
     { title: 'Silêncio e Respeito', content: 'Pedimos que seja silencioso e discreto, especialmente à noite. Não é permitido transitar sem camisa nas áreas comuns.' },
     { title: 'Fumo Proibido', content: 'Não é permitido fumar no interior do apartamento. O local possui sensores de gás e fumaça.' },
     { title: 'Lixeiras', content: 'Ficam no hall dos elevadores à esquerda, em um espaço com porta antes dos elevadores.' },
@@ -525,17 +531,30 @@ export default function App() {
                       </button>
                     </div>
                   </div>
+                  <div className="mt-4 p-3 bg-white/5 rounded-xl border border-white/5 flex items-center gap-3">
+                    <Zap size={16} className="text-ipe-gold" />
+                    <div>
+                      <p className="text-[9px] uppercase tracking-wider opacity-60">Voltagem / Tensão</p>
+                      <p className="text-sm font-bold">220V (Atenção ao ligar aparelhos)</p>
+                    </div>
+                  </div>
                 </div>
                 <Wifi className="absolute -right-10 -bottom-10 text-white/5 w-48 h-48 rotate-12" />
               </div>
 
               {/* Features Grid - Visual */}
               <div className="mb-12">
-                <div className="flex items-center gap-2 mb-6 px-2">
-                  <Sparkles size={18} className="text-ipe-gold" />
-                  <h3 className="text-xs font-bold text-ipe-muted uppercase tracking-[3px]">Comodidades do Condomínio</h3>
+                <div className="flex items-center justify-between mb-6 px-2 flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles size={18} className="text-ipe-gold" />
+                    <h3 className="text-xs font-bold text-ipe-muted uppercase tracking-[3px]">Comodidades do Condomínio</h3>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-600 rounded-full border border-green-100">
+                    <Clock size={12} strokeWidth={2.5} />
+                    <span className="text-[9px] font-bold uppercase tracking-tight">Academia, Lavanderia e Mercadinho 24h</span>
+                  </div>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-9 gap-4">
                   {amenities.map((item, i) => (
                     <motion.div 
                       key={i}
@@ -579,6 +598,10 @@ export default function App() {
                     <ul className="space-y-3 text-xs">
                       <li className="flex gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
+                        <span>Funcionamento 24 Horas.</span>
+                      </li>
+                      <li className="flex gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-ipe-gold mt-1.5 shrink-0" />
                         <span>Desligue luzes e ar ao sair.</span>
                       </li>
                       <li className="flex gap-2">
@@ -608,6 +631,54 @@ export default function App() {
                           <span>Não circular em trajes de banho.</span>
                         </li>
                       </ul>
+                    </div>
+                  </Card>
+                </div>
+
+                {/* Guia da Cafeteira */}
+                <div className="mt-8">
+                  <Card title="Guia da Cafeteira (Cápsulas Três)" icon={Coffee}>
+                    <div className="space-y-6">
+                      <p className="text-[11px] text-ipe-muted leading-relaxed">Siga as instruções abaixo para preparar seu café na máquina Três Corações:</p>
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+                        {[
+                          { step: 1, title: 'Energia', text: 'Tomada 220V. Aguarde aquecer.', img: 'input_file_4.png', icon: Zap, color: '#EAB308' },
+                          { step: 2, title: 'Água', text: 'Use água filtrada no reservatório.', img: 'input_file_7.png', icon: Droplets, color: '#3B82F6' },
+                          { step: 3, title: 'Abrir', text: 'Levante a alavanca para abrir.', img: 'input_file_3.png', icon: ArrowUpCircle, color: '#64748B' },
+                          { step: 4, title: 'Cápsula', text: 'Insira a cápsula Três no slot.', img: 'input_file_6.png', icon: Hexagon, color: '#92400E' },
+                          { step: 5, title: 'Fechar', text: 'Abaixe para perfurar a cápsula.', img: 'input_file_1.png', icon: ArrowDownCircle, color: '#334155' },
+                          { step: 6, title: 'Preparo', text: 'Selecione o botão da cor da cápsula.', img: 'input_file_2.png', icon: Coffee, color: '#059669' }
+                        ].map((s, i) => (
+                          <div key={i} className="flex flex-col gap-2 group">
+                            <div className="flex items-center gap-2">
+                              <span 
+                                className="w-5 h-5 text-white rounded-full flex items-center justify-center text-[9px] font-bold shadow-sm"
+                                style={{ backgroundColor: s.color }}
+                              >
+                                {s.step}
+                              </span>
+                              <h4 className="text-[11px] font-bold text-ipe-brown uppercase tracking-wider">{s.title}</h4>
+                            </div>
+                            <div 
+                              className="relative aspect-video rounded-xl overflow-hidden shadow-sm border border-transparent bg-ipe-bg flex items-center justify-center transition-all duration-300"
+                              style={{ borderBottom: `2px solid ${s.color}20` }}
+                            >
+                              <img 
+                                src={s.img} 
+                                alt={s.title} 
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                                referrerPolicy="no-referrer" 
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  e.currentTarget.parentElement?.classList.add('flex-col');
+                                }}
+                              />
+                              <s.icon size={24} className="absolute opacity-10" style={{ color: s.color }} />
+                            </div>
+                            <p className="text-[10px] text-ipe-muted leading-tight">{s.text}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </Card>
                 </div>
@@ -932,7 +1003,11 @@ export default function App() {
                           <h4 className="text-sm font-bold text-ipe-brown">{rule.title}</h4>
                           <p className="text-xs text-ipe-text line-clamp-2 mt-1">{rule.content}</p>
                           <button 
-                            onClick={() => setView(rule.title.toLowerCase().includes('wi-fi') ? 'flat' : 'rules')}
+                            onClick={() => {
+                              if (rule.title.toLowerCase().includes('wi-fi')) setView('flat');
+                              else if (rule.title.toLowerCase().includes('cafeteira')) setView('flat');
+                              else setView('rules');
+                            }}
                             className="text-[10px] text-ipe-gold font-bold uppercase tracking-wider mt-2 hover:underline"
                           >
                             Ver mais
