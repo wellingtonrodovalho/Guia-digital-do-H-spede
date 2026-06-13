@@ -78,6 +78,31 @@ const Logo = ({ size = 60, className = "" }: { size?: number, className?: string
   </svg>
 );
 
+const Bandeirinhas = () => {
+  const flags = Array.from({ length: 28 });
+  return (
+    <div className="absolute top-0 left-0 right-0 overflow-hidden flex justify-between h-8 pointer-events-none z-30 px-2 opacity-95">
+      {flags.map((_, i) => {
+        const isGreen = i % 2 === 0;
+        const colorClass = isGreen ? 'bg-[#009b3a]' : 'bg-[#fedf00]';
+        return (
+          <motion.div
+            key={i}
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: i * 0.02, type: "spring", stiffness: 80 }}
+            className={`w-2.5 sm:w-3.5 md:w-4.5 h-5 sm:h-6 origin-top ${colorClass} shadow-sm`}
+            style={{
+              clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 50% 75%, 0% 100%)',
+              transform: `rotate(${(i % 3 === 0 ? 4 : (i % 3 === 1 ? -4 : 0))}deg)`
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 const NavButton = ({ title, icon: Icon, onClick, color = "bg-white" }: { title: string, icon: any, onClick: () => void, color?: string }) => (
   <motion.button
     whileHover={{ scale: 1.02 }}
@@ -152,6 +177,23 @@ export default function App() {
   const [view, setView] = useState<ViewState>('home');
   const [activeCategory, setActiveCategory] = useState('TUDO');
   const [searchQuery, setSearchQuery] = useState('');
+  const [confetti, setConfetti] = useState<{ id: number; x: number; y: number; color: string; rotation: number; shape: 'circle' | 'square' | 'soccer' }[]>([]);
+
+  const triggerConfetti = () => {
+    const colors = ['#009b3a', '#fedf00', '#002776', '#ffffff'];
+    const newConfetti = Array.from({ length: 45 }).map((_, i) => ({
+      id: Math.random() + i + Date.now(),
+      x: Math.random() * 100, // percentage from left
+      y: -15 - (Math.random() * 30), // starting above viewport
+      color: colors[i % colors.length],
+      rotation: Math.random() * 360,
+      shape: (i % 6 === 0) ? 'soccer' : (i % 2 === 0 ? 'circle' : 'square') as any
+    }));
+    setConfetti(prev => [...prev, ...newConfetti]);
+    setTimeout(() => {
+      setConfetti(prev => prev.filter(c => !newConfetti.some(nc => nc.id === c.id)));
+    }, 4500);
+  };
 
   const amenities = [
     { icon: Wifi, label: 'Wi-Fi / Internet (Wifi)', category: 'COMODIDADES' },
@@ -402,7 +444,10 @@ export default function App() {
     : places.filter(p => p.category === activeCategory);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
+    const timer = setTimeout(() => {
+      setLoading(false);
+      setTimeout(() => triggerConfetti(), 350);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -426,12 +471,51 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-ipe-bg pb-24">
+    <div className="min-h-screen bg-ipe-bg pb-24 relative overflow-x-hidden">
+      <Bandeirinhas />
+
+      {/* Confetti Container */}
+      <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+        {confetti.map((c) => (
+          <motion.div
+            key={c.id}
+            initial={{ y: `${c.y}vh`, x: `${c.x}vw`, rotate: c.rotation, opacity: 1 }}
+            animate={{ 
+              y: '105vh', 
+              x: `${c.x + (Math.random() * 20 - 10)}vw`,
+              rotate: c.rotation + 720,
+              opacity: [1, 1, 0.8, 0]
+            }}
+            transition={{ duration: 2.5 + Math.random() * 1.5, ease: "linear" }}
+            className="absolute"
+            style={{ transformOrigin: 'center' }}
+          >
+            {c.shape === 'soccer' ? (
+              <span className="text-lg">⚽</span>
+            ) : (
+              <div 
+                className={c.shape === 'circle' ? 'rounded-full text-xs shadow-sm shadow-black/5' : 'text-xs shadow-sm shadow-black/5'}
+                style={{ 
+                  width: `${8 + Math.random() * 8}px`, 
+                  height: `${8 + Math.random() * 8}px`, 
+                  backgroundColor: c.color 
+                }}
+              />
+            )}
+          </motion.div>
+        ))}
+      </div>
+
       {/* Header */}
-      <header className="pt-12 pb-8 px-6 text-center">
-        <Logo size={80} className="mx-auto mb-6 bg-white p-3 rounded-full shadow-lg" />
-        <h1 className="text-4xl font-bold text-ipe-brown font-serif">Flat Crystal 1701</h1>
-        <p className="text-ipe-muted mt-2 italic">Guia do Hóspede</p>
+      <header className="pt-12 pb-8 px-6 text-center relative z-10">
+        <button 
+          onClick={() => { setView('home'); setSearchQuery(''); }} 
+          className="cursor-pointer group inline-flex flex-col items-center focus:outline-none bg-transparent border-0"
+        >
+          <Logo size={80} className="mx-auto mb-6 bg-white p-3 rounded-full shadow-lg transition-transform group-hover:scale-105" />
+          <h1 className="text-4xl font-bold text-ipe-brown font-serif group-hover:text-ipe-gold transition-colors">Flat Crystal 1701</h1>
+          <p className="text-ipe-muted mt-2 italic group-hover:opacity-85 transition-opacity">Guia do Hóspede</p>
+        </button>
 
         {/* Search Bar */}
         <div className="max-w-md mx-auto mt-8 px-4 relative">
@@ -470,6 +554,69 @@ export default function App() {
       </header>
 
       <main className="max-w-6xl mx-auto px-6">
+        {/* Sticky Mini Guide Navigation Bar - Smaller and Fixed on All Pages */}
+        <div className="sticky top-0 bg-ipe-bg/95 backdrop-blur-md z-30 py-4 -mx-6 px-6 border-b border-ipe-brown/5 mb-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1 md:grid md:grid-cols-6 md:pb-0 scroll-smooth">
+              {[
+                { id: 'flat' as ViewState, title: 'O Flat', sub: 'Wi-Fi e Infos', icon: Building2 },
+                { id: 'checkin' as ViewState, title: 'Check-in', sub: 'Como Entrar', icon: Key },
+                { id: 'guia' as ViewState, title: 'Guia Local', sub: 'Lugares', icon: Navigation },
+                { id: 'checkout' as ViewState, title: 'Check-out', sub: 'Instruções', icon: LogOut },
+                { id: 'rules' as ViewState, title: 'Regras', sub: 'Normas da Casa', icon: BookOpen },
+                { id: 'emergencia' as ViewState, title: 'Emergência', sub: 'Contatos', icon: AlertCircle, isEmergency: true }
+              ].map((item) => {
+                const active = view === item.id;
+                const isEmergency = item.isEmergency;
+                return (
+                  <motion.button
+                    key={item.id}
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => {
+                      setView(item.id);
+                      setSearchQuery('');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={`relative flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 shrink-0 text-left cursor-pointer w-[140px] sm:w-auto ${
+                      active 
+                        ? 'bg-white border-ipe-gold shadow-md shadow-ipe-gold/5 z-10' 
+                        : isEmergency 
+                          ? 'bg-red-50/70 border-red-100 text-red-700 hover:bg-red-50' 
+                          : 'bg-white/70 border-ipe-brown/5 hover:border-ipe-gold/20 hover:bg-white text-ipe-muted'
+                    }`}
+                  >
+                    {/* Active Accent Decorator with World Cup Colors (Green & Gold) */}
+                    {active && (
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#009b3a] to-[#fedf00] rounded-t-xl" />
+                    )}
+                    
+                    <div className={`p-2 rounded-lg transition-colors shrink-0 ${
+                      active 
+                        ? 'bg-[#009b3a]/10 text-[#009b3a]' 
+                        : isEmergency 
+                          ? 'bg-red-100/60 text-red-600' 
+                          : 'bg-ipe-gold/10 text-ipe-gold'
+                    }`}>
+                      <item.icon size={16} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <h4 className={`text-[11px] font-bold uppercase tracking-wider truncate leading-tight ${
+                        active ? 'text-ipe-brown' : isEmergency ? 'text-red-700' : 'text-ipe-brown/80'
+                      }`}>
+                        {item.title}
+                      </h4>
+                      <p className="text-[9px] text-ipe-muted leading-none font-medium mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
+                        {item.sub}
+                      </p>
+                    </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
         <AnimatePresence mode="wait">
           {view === 'home' && (
             <motion.div
@@ -477,14 +624,139 @@ export default function App() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              className="space-y-6"
             >
-              <NavButton title="O Flat" icon={Building2} onClick={() => setView('flat')} />
-              <NavButton title="Check-in" icon={Key} onClick={() => setView('checkin')} />
-              <NavButton title="Guia Local" icon={Navigation} onClick={() => setView('guia')} />
-              <NavButton title="Check-out" icon={LogOut} onClick={() => setView('checkout')} />
-              <NavButton title="Regras da casa" icon={BookOpen} onClick={() => setView('rules')} />
-              <NavButton title="Emergência" icon={AlertCircle} onClick={() => setView('emergencia')} color="bg-red-50" />
+              {/* Card Copa do Mundo */}
+              <div className="relative bg-white rounded-3xl p-6 shadow-sm border border-ipe-brown/5 overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                {/* Visual background gradient and accents */}
+                <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-yellow-100/20 to-transparent pointer-events-none" />
+                <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-[#009b3a] via-[#fedf00] to-[#002776] rounded-l-full" />
+                
+                <div className="space-y-2 max-w-xl pl-2">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 border border-green-100 text-[10px] font-black uppercase tracking-wider">
+                    <span className="inline-block animate-bounce">⚽</span> Rumo ao Hexa!
+                  </div>
+                  <h3 className="text-xl font-bold font-serif text-ipe-brown leading-tight">
+                    Flat Crystal 1701 No Clima da Copa! 🇧🇷
+                  </h3>
+                  <p className="text-xs text-ipe-muted leading-relaxed font-medium font-sans">
+                    Aproveite cada lance da Copa do Mundo! Preparamos o flat com canais esportivos configurados na nossa <span className="font-bold text-green-700">Smart TV 65"</span> e ar condicionado silencioso para você vibrar com todo o conforto.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap gap-2 shrink-0 w-full md:w-auto">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={triggerConfetti}
+                    className="w-full md:w-auto px-5 py-3.5 bg-gradient-to-r from-[#009b3a] to-[#fedf00] text-green-950 hover:from-[#009b3a]/90 hover:to-[#fedf00]/95 font-black text-xs uppercase tracking-widest rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                  >
+                    <span>Comemorar Gol!</span>
+                    <span className="text-base animate-pulse">⚽🎉</span>
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Quick Info Dashboard - Highly Useful */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Wi-Fi Copy Box */}
+                <div className="bg-white rounded-2xl p-5 border border-ipe-brown/5 shadow-sm flex flex-col justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-ipe-gold/10 rounded-xl text-ipe-gold">
+                      <Wifi size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-ipe-muted uppercase tracking-wider">Wi-Fi do Apartamento</h4>
+                      <p className="text-sm font-bold text-ipe-brown">Cond Crystal Place</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText('Cond Crystal Place');
+                        alert('Nome da rede copiado!');
+                      }}
+                      className="flex items-center justify-between px-3 py-2 bg-ipe-bg rounded-xl text-xs hover:bg-ipe-gold/10 text-ipe-brown font-medium border border-ipe-brown/5 group transition-colors"
+                    >
+                      <span className="opacity-70">Copiar Rede</span>
+                      <Copy size={14} className="opacity-60 group-hover:opacity-100" />
+                    </button>
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText('crystal@2022');
+                        alert('Senha copiada!');
+                      }}
+                      className="flex items-center justify-between px-3 py-2 bg-ipe-bg rounded-xl text-xs hover:bg-ipe-gold/10 text-ipe-brown font-medium border border-ipe-brown/5 group transition-colors"
+                    >
+                      <div className="text-left">
+                        <span className="opacity-70 block text-[9px] uppercase tracking-wider leading-none">Senha</span>
+                        <span className="font-bold">crystal@2022</span>
+                      </div>
+                      <Copy size={14} className="opacity-60 group-hover:opacity-100" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Lock Password Helper */}
+                <div className="bg-white rounded-2xl p-5 border border-ipe-brown/5 shadow-sm flex flex-col justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-ipe-gold/10 rounded-xl text-ipe-gold">
+                      <Key size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-ipe-muted uppercase tracking-wider">Porta de Entrada</h4>
+                      <p className="text-sm font-bold text-ipe-brown">Sua Senha do Flat</p>
+                    </div>
+                  </div>
+                  <div className="bg-ipe-bg p-3.5 rounded-xl border border-ipe-brown/5">
+                    <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-widest leading-none mb-1">Como usar</p>
+                    <p className="text-[11px] text-ipe-brown leading-relaxed font-medium">
+                      Digite <span className="font-bold text-ipe-gold">*DDD + celular#</span>
+                    </p>
+                    <p className="text-[9px] text-ipe-muted italic mt-1 font-medium">Ex: *6299151# • Ao sair puxe o trinco para cima para travar.</p>
+                  </div>
+                </div>
+
+                {/* Checkout Reminders */}
+                <div className="bg-white rounded-2xl p-5 border border-ipe-brown/5 shadow-sm flex flex-col justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-ipe-gold/10 rounded-xl text-ipe-gold">
+                      <Clock size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-ipe-muted uppercase tracking-wider">Horários do Flat</h4>
+                      <p className="text-sm font-bold text-ipe-brown">Check-in e Check-out</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2 text-xs">
+                    <div className="flex items-center justify-between py-1 border-b border-ipe-brown/5">
+                      <span className="text-ipe-muted font-medium">Entrada (Check-in)</span>
+                      <span className="font-bold text-ipe-brown">A partir das 14h</span>
+                    </div>
+                    <div className="flex items-center justify-between py-1">
+                      <span className="text-ipe-muted font-medium">Saída (Check-out)</span>
+                      <span className="font-bold text-red-600">Até as 11h</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Direct Help Card */}
+              <div className="p-6 bg-ipe-gold/5 border border-dashed border-ipe-gold/20 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-center sm:text-left">
+                  <h4 className="font-serif font-bold text-ipe-brown">Precisa de ajuda ou dicas extras?</h4>
+                  <p className="text-xs text-ipe-muted mt-1">Navegue pelas abas acima ou envie uma mensagem diretamente para Wellington no WhatsApp.</p>
+                </div>
+                <a 
+                  href="https://wa.me/5562991514568" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-colors shadow-sm flex items-center gap-1.5 shrink-0"
+                >
+                  <MessageCircle size={14} />
+                  Falar no WhatsApp
+                </a>
+              </div>
             </motion.div>
           )}
 
