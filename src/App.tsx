@@ -78,31 +78,6 @@ const Logo = ({ size = 60, className = "" }: { size?: number, className?: string
   </svg>
 );
 
-const Bandeirinhas = () => {
-  const flags = Array.from({ length: 28 });
-  return (
-    <div className="absolute top-0 left-0 right-0 overflow-hidden flex justify-between h-8 pointer-events-none z-30 px-2 opacity-95">
-      {flags.map((_, i) => {
-        const isGreen = i % 2 === 0;
-        const colorClass = isGreen ? 'bg-[#009b3a]' : 'bg-[#fedf00]';
-        return (
-          <motion.div
-            key={i}
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: i * 0.02, type: "spring", stiffness: 80 }}
-            className={`w-2.5 sm:w-3.5 md:w-4.5 h-5 sm:h-6 origin-top ${colorClass} shadow-sm`}
-            style={{
-              clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 50% 75%, 0% 100%)',
-              transform: `rotate(${(i % 3 === 0 ? 4 : (i % 3 === 1 ? -4 : 0))}deg)`
-            }}
-          />
-        );
-      })}
-    </div>
-  );
-};
-
 const NavButton = ({ title, icon: Icon, onClick, color = "bg-white" }: { title: string, icon: any, onClick: () => void, color?: string }) => (
   <motion.button
     whileHover={{ scale: 1.02 }}
@@ -177,23 +152,6 @@ export default function App() {
   const [view, setView] = useState<ViewState>('home');
   const [activeCategory, setActiveCategory] = useState('TUDO');
   const [searchQuery, setSearchQuery] = useState('');
-  const [confetti, setConfetti] = useState<{ id: number; x: number; y: number; color: string; rotation: number; shape: 'circle' | 'square' | 'soccer' }[]>([]);
-
-  const triggerConfetti = () => {
-    const colors = ['#009b3a', '#fedf00', '#002776', '#ffffff'];
-    const newConfetti = Array.from({ length: 45 }).map((_, i) => ({
-      id: Math.random() + i + Date.now(),
-      x: Math.random() * 100, // percentage from left
-      y: -15 - (Math.random() * 30), // starting above viewport
-      color: colors[i % colors.length],
-      rotation: Math.random() * 360,
-      shape: (i % 6 === 0) ? 'soccer' : (i % 2 === 0 ? 'circle' : 'square') as any
-    }));
-    setConfetti(prev => [...prev, ...newConfetti]);
-    setTimeout(() => {
-      setConfetti(prev => prev.filter(c => !newConfetti.some(nc => nc.id === c.id)));
-    }, 4500);
-  };
 
   const amenities = [
     { icon: Wifi, label: 'Wi-Fi / Internet (Wifi)', category: 'COMODIDADES' },
@@ -444,10 +402,7 @@ export default function App() {
     : places.filter(p => p.category === activeCategory);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-      setTimeout(() => triggerConfetti(), 350);
-    }, 2000);
+    const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -472,39 +427,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-ipe-bg pb-24 relative overflow-x-hidden">
-      <Bandeirinhas />
-
-      {/* Confetti Container */}
-      <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
-        {confetti.map((c) => (
-          <motion.div
-            key={c.id}
-            initial={{ y: `${c.y}vh`, x: `${c.x}vw`, rotate: c.rotation, opacity: 1 }}
-            animate={{ 
-              y: '105vh', 
-              x: `${c.x + (Math.random() * 20 - 10)}vw`,
-              rotate: c.rotation + 720,
-              opacity: [1, 1, 0.8, 0]
-            }}
-            transition={{ duration: 2.5 + Math.random() * 1.5, ease: "linear" }}
-            className="absolute"
-            style={{ transformOrigin: 'center' }}
-          >
-            {c.shape === 'soccer' ? (
-              <span className="text-lg">⚽</span>
-            ) : (
-              <div 
-                className={c.shape === 'circle' ? 'rounded-full text-xs shadow-sm shadow-black/5' : 'text-xs shadow-sm shadow-black/5'}
-                style={{ 
-                  width: `${8 + Math.random() * 8}px`, 
-                  height: `${8 + Math.random() * 8}px`, 
-                  backgroundColor: c.color 
-                }}
-              />
-            )}
-          </motion.div>
-        ))}
-      </div>
 
       {/* Header */}
       <header className="pt-12 pb-8 px-6 text-center relative z-10">
@@ -586,14 +508,14 @@ export default function App() {
                           : 'bg-white/70 border-ipe-brown/5 hover:border-ipe-gold/20 hover:bg-white text-ipe-muted'
                     }`}
                   >
-                    {/* Active Accent Decorator with World Cup Colors (Green & Gold) */}
+                    {/* Active Accent Decorator */}
                     {active && (
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#009b3a] to-[#fedf00] rounded-t-xl" />
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-ipe-gold rounded-t-xl" />
                     )}
                     
                     <div className={`p-2 rounded-lg transition-colors shrink-0 ${
                       active 
-                        ? 'bg-[#009b3a]/10 text-[#009b3a]' 
+                        ? 'bg-ipe-gold/10 text-ipe-gold' 
                         : isEmergency 
                           ? 'bg-red-100/60 text-red-600' 
                           : 'bg-ipe-gold/10 text-ipe-gold'
@@ -626,37 +548,6 @@ export default function App() {
               exit={{ opacity: 0, y: -20 }}
               className="space-y-6"
             >
-              {/* Card Copa do Mundo */}
-              <div className="relative bg-white rounded-3xl p-6 shadow-sm border border-ipe-brown/5 overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-                {/* Visual background gradient and accents */}
-                <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-yellow-100/20 to-transparent pointer-events-none" />
-                <div className="absolute left-0 top-0 bottom-0 w-2 bg-gradient-to-b from-[#009b3a] via-[#fedf00] to-[#002776] rounded-l-full" />
-                
-                <div className="space-y-2 max-w-xl pl-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 text-green-700 border border-green-100 text-[10px] font-black uppercase tracking-wider">
-                    <span className="inline-block animate-bounce">⚽</span> Rumo ao Hexa!
-                  </div>
-                  <h3 className="text-xl font-bold font-serif text-ipe-brown leading-tight">
-                    Flat Crystal 1701 No Clima da Copa! 🇧🇷
-                  </h3>
-                  <p className="text-xs text-ipe-muted leading-relaxed font-medium font-sans">
-                    Aproveite cada lance da Copa do Mundo! Preparamos o flat com canais esportivos configurados na nossa <span className="font-bold text-green-700">Smart TV 65"</span> e ar condicionado silencioso para você vibrar com todo o conforto.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap gap-2 shrink-0 w-full md:w-auto">
-                  <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={triggerConfetti}
-                    className="w-full md:w-auto px-5 py-3.5 bg-gradient-to-r from-[#009b3a] to-[#fedf00] text-green-950 hover:from-[#009b3a]/90 hover:to-[#fedf00]/95 font-black text-xs uppercase tracking-widest rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
-                  >
-                    <span>Comemorar Gol!</span>
-                    <span className="text-base animate-pulse">⚽🎉</span>
-                  </motion.button>
-                </div>
-              </div>
-
               {/* Quick Info Dashboard - Highly Useful */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Wi-Fi Copy Box */}
@@ -704,16 +595,16 @@ export default function App() {
                       <Key size={20} />
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-ipe-muted uppercase tracking-wider">Porta de Entrada</h4>
-                      <p className="text-sm font-bold text-ipe-brown">Sua Senha do Flat</p>
+                      <h4 className="text-xs font-bold text-ipe-muted uppercase tracking-wider">Acesso ao Flat</h4>
+                      <p className="text-sm font-bold text-ipe-brown">Chave na Recepção</p>
                     </div>
                   </div>
                   <div className="bg-ipe-bg p-3.5 rounded-xl border border-ipe-brown/5">
-                    <p className="text-[10px] font-bold text-ipe-muted uppercase tracking-widest leading-none mb-1">Como usar</p>
+                    <p className="text-[10px] font-bold text-red-600 uppercase tracking-widest leading-none mb-1">Aviso Importante</p>
                     <p className="text-[11px] text-ipe-brown leading-relaxed font-medium">
-                      Digite <span className="font-bold text-ipe-gold">*DDD + celular#</span>
+                      Desconsidere 'fechadura digital'. A chave deve ser retirada diretamente na <span className="font-bold text-ipe-gold">recepção</span>.
                     </p>
-                    <p className="text-[9px] text-ipe-muted italic mt-1 font-medium">Ex: *6299151# • Ao sair puxe o trinco para cima para travar.</p>
+                    <p className="text-[9px] text-ipe-muted italic mt-1 font-medium">Boa estadia! Qualquer dúvida, fale com o anfitrião.</p>
                   </div>
                 </div>
 
@@ -978,62 +869,87 @@ export default function App() {
 
           {view === 'checkin' && (
             <PageContainer key="checkin" title="Check-in" onBack={() => setView('home')}>
-              {/* Fechadura Inteligente */}
-              <div className="bg-ipe-brown rounded-2xl p-6 mb-6 text-white shadow-lg">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-2 bg-white/10 rounded-lg">
-                    <Key size={24} className="text-ipe-gold" />
-                  </div>
-                  <h2 className="text-xl font-bold font-serif">Fechadura Inteligente</h2>
-                </div>
+              {/* Aviso Importante de Mudança de Fechadura */}
+              <div className="bg-white rounded-3xl p-8 mb-8 shadow-md border-2 border-ipe-gold/20 relative overflow-hidden">
+                {/* Visual indicator lines in gold colors */}
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-ipe-gold" />
                 
-                <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-4 text-center">
-                  <p className="text-xs uppercase tracking-widest opacity-60 mb-4">Estrutura da Senha (7 dígitos)</p>
-                  <div className="text-2xl font-bold tracking-[0.2em] text-ipe-gold mb-2">
-                    *DDD PREFIXO#
+                <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
+                  <div className="p-4 bg-amber-50 text-ipe-gold rounded-2xl shrink-0 shadow-inner">
+                    <Key size={32} className="animate-pulse" />
                   </div>
-                  <p className="text-[10px] opacity-50 italic">Exemplo para (62) 99151...: *6299151#</p>
-                </div>
-
-                <div className="flex gap-3 p-4 bg-white/10 rounded-xl border border-white/10">
-                  <Info size={20} className="text-ipe-gold shrink-0" />
-                  <p className="text-sm leading-relaxed">
-                    Ao fechar a porta, <span className="font-bold">sempre trave a fechadura movendo a maçaneta para cima</span>, tanto ao entrar quanto ao sair.
-                  </p>
+                  <div className="space-y-3">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-100 text-[10px] font-black uppercase tracking-wider">
+                      ⚠️ Atenção / Atualização Importante
+                    </div>
+                    <h2 className="text-2xl font-serif font-bold text-ipe-brown">Retirada de Chaves na Recepção</h2>
+                    <p className="text-sm text-ipe-text leading-relaxed font-medium">
+                      <span className="font-bold text-red-600">Aviso importante:</span> Onde lê-se "fechadura digital", por favor desconsidere, pois trocamos a fechadura recentemente. A chave física do apartamento deve ser retirada diretamente na <span className="font-bold text-ipe-gold">recepção</span> do condomínio.
+                    </p>
+                    <p className="text-sm text-ipe-brown font-bold">
+                      Desejamos a você uma excelente estadia! ✨
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                {/* Na recepção */}
-                <Card title="Na recepção">
-                  <p className="text-sm text-ipe-text leading-relaxed">
-                    Identifique-se e receba o cartão para ativar a energia do apartamento. Todos os hóspedes devem apresentar documentos de identificação.
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {/* Recepção */}
+                <div className="bg-white rounded-2xl p-6 border border-ipe-brown/5 shadow-sm space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-ipe-gold/10 text-ipe-gold rounded-lg">
+                      <Building2 size={18} />
+                    </div>
+                    <h3 className="font-bold text-ipe-brown text-sm uppercase tracking-wider">Na Recepção</h3>
+                  </div>
+                  <p className="text-xs text-ipe-text leading-relaxed font-medium">
+                    Identifique-se como hóspede do <span className="font-bold">Flat 1701</span>. Você receberá a chave física e também o cartão economizador para ativar a energia interna do apartamento. Todos os hóspedes devem apresentar um documento de identificação com foto.
                   </p>
-                </Card>
+                </div>
 
-                {/* Como chegar */}
+                {/* Economizador de Energia */}
+                <div className="bg-white rounded-2xl p-6 border border-ipe-brown/5 shadow-sm space-y-3">
+                  <div className="flex items-center gap-2">
+                    <div className="p-2 bg-ipe-gold/10 text-ipe-gold rounded-lg">
+                      <Zap size={18} />
+                    </div>
+                    <h3 className="font-bold text-ipe-brown text-sm uppercase tracking-wider">Cartão de Energia</h3>
+                  </div>
+                  <p className="text-xs text-ipe-text leading-relaxed font-medium">
+                    Ao entrar no apartamento, insira o cartão recebido na recepção no dispositivo economizador (localizado logo ao lado da porta) para ativar as luzes, tomadas e o ar condicionado. Lembre-se de retirá-lo ao sair.
+                  </p>
+                </div>
+
+                {/* Localização */}
                 <a 
                   href="https://maps.google.com/?q=Crystal+Place" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="bg-white rounded-2xl p-6 shadow-sm border border-ipe-brown/5 flex items-center justify-between group hover:bg-ipe-gold/5 transition-colors"
+                  className="bg-white rounded-2xl p-6 border border-ipe-brown/5 shadow-sm hover:shadow-md hover:border-ipe-gold/20 transition-all flex flex-col justify-between gap-4 group"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:bg-blue-100 transition-colors">
-                      <MapPin size={24} />
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-100 transition-colors">
+                        <MapPin size={18} />
+                      </div>
+                      <h3 className="font-bold text-ipe-brown text-sm uppercase tracking-wider">Como Chegar</h3>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-ipe-brown">Como chegar</h3>
-                      <p className="text-xs text-ipe-muted">Crystal Place</p>
-                    </div>
+                    <ChevronRight size={18} className="text-ipe-muted group-hover:text-ipe-gold transition-transform group-hover:translate-x-1" />
                   </div>
-                  <ChevronRight size={20} className="text-ipe-muted group-hover:text-ipe-gold transition-transform group-hover:translate-x-1" />
+                  <div>
+                    <p className="text-xs text-ipe-text font-medium leading-relaxed">
+                      O condomínio <span className="font-bold">Crystal Place</span> possui excelente localização com segurança 24h. Clique aqui para abrir a rota no Google Maps.
+                    </p>
+                    <p className="text-[10px] text-blue-600 font-bold mt-2 uppercase tracking-wider">Abrir no Maps →</p>
+                  </div>
                 </a>
               </div>
 
-              <div className="bg-ipe-gold/10 p-4 rounded-2xl border border-ipe-gold/20 flex gap-3">
-                <Info className="text-ipe-gold shrink-0" />
-                <p className="text-sm text-ipe-brown italic">O check-in inicia às 14:00. Caso precise entrar antes, consulte disponibilidade.</p>
+              <div className="bg-ipe-gold/5 p-5 rounded-2xl border border-ipe-gold/15 flex gap-3 items-center">
+                <Info className="text-ipe-gold shrink-0" size={20} />
+                <p className="text-xs text-ipe-brown font-medium leading-relaxed">
+                  O check-in inicia às <span className="font-bold text-ipe-gold">14:00</span>. Caso precise entrar antes, por favor consulte com o anfitrião sobre a disponibilidade antecipada.
+                </p>
               </div>
             </PageContainer>
           )}
