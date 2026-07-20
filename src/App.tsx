@@ -67,7 +67,7 @@ type ViewState = 'home' | 'flat' | 'checkin' | 'guia' | 'checkout' | 'emergencia
 
 const Logo = ({ size = 60, className = "" }: { size?: number, className?: string }) => (
   <svg viewBox="0 0 512 512" width={size} height={size} className={className} xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" stroke="#5d4017" strokeWidth="42" strokeLinecap="round">
+    <g fill="none" stroke="#dfc4ab" strokeWidth="42" strokeLinecap="round">
       <path d="M256 450 V200" />
       <path d="M256 380 L130 270" />
       <path d="M256 380 L382 270" />
@@ -412,7 +412,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 flex flex-col items-center justify-center bg-ipe-brown z-50">
+      <div className="fixed inset-0 flex flex-col items-center justify-center bg-ipe-bg z-50">
         <motion.div 
           animate={{ scale: [0.95, 1.05, 0.95], opacity: [0.9, 1, 0.9] }}
           transition={{ repeat: Infinity, duration: 2 }}
@@ -504,7 +504,7 @@ export default function App() {
                       active 
                         ? 'bg-white border-ipe-gold shadow-md shadow-ipe-gold/5 z-10' 
                         : isEmergency 
-                          ? 'bg-red-50/70 border-red-100 text-red-700 hover:bg-red-50' 
+                          ? 'bg-red-950/20 border-red-900/30 text-red-400 hover:bg-red-950/30' 
                           : 'bg-white/70 border-ipe-brown/5 hover:border-ipe-gold/20 hover:bg-white text-ipe-muted'
                     }`}
                   >
@@ -517,7 +517,7 @@ export default function App() {
                       active 
                         ? 'bg-ipe-gold/10 text-ipe-gold' 
                         : isEmergency 
-                          ? 'bg-red-100/60 text-red-600' 
+                          ? 'bg-red-950/40 text-red-400' 
                           : 'bg-ipe-gold/10 text-ipe-gold'
                     }`}>
                       <item.icon size={16} />
@@ -654,7 +654,7 @@ export default function App() {
           {view === 'flat' && (
             <PageContainer key="flat" title="O Flat" onBack={() => setView('home')}>
               {/* Wi-Fi Section - Prominent */}
-              <div className="bg-ipe-brown text-white rounded-3xl p-8 mb-8 shadow-xl relative overflow-hidden">
+              <div className="bg-white text-ipe-text rounded-3xl p-8 mb-8 shadow-xl relative overflow-hidden border border-ipe-brown/10">
                 <div className="relative z-10">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="p-2 bg-white/10 rounded-lg">
@@ -712,7 +712,7 @@ export default function App() {
                     <Sparkles size={18} className="text-ipe-gold" />
                     <h3 className="text-xs font-bold text-ipe-muted uppercase tracking-[3px]">Comodidades do Condomínio</h3>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-600 rounded-full border border-green-100">
+                  <div className="flex items-center gap-2 px-3 py-1 bg-green-950/20 text-green-400 rounded-full border border-green-900/30">
                     <Clock size={12} strokeWidth={2.5} />
                     <span className="text-[9px] font-bold uppercase tracking-tight">Academia, Lavanderia e Mercadinho 24h</span>
                   </div>
@@ -739,7 +739,7 @@ export default function App() {
                 {/* Rules Section */}
                 <div className="px-2">
                   <div className="flex items-center gap-3 mb-8">
-                    <div className="w-10 h-10 bg-ipe-brown text-white rounded-xl flex items-center justify-center">
+                    <div className="w-10 h-10 bg-ipe-gold/10 text-ipe-gold rounded-xl flex items-center justify-center">
                       <ShieldCheck size={20} />
                     </div>
                     <h2 className="text-xl font-bold text-ipe-brown font-serif">Regras de Convivência</h2>
@@ -760,7 +760,7 @@ export default function App() {
                           <Check size={12} className="text-ipe-gold" />
                         </div>
                         <span className="text-ipe-text leading-relaxed text-sm">
-                          {rule.includes('220V') ? <span className="font-bold text-red-600">{rule}</span> : rule}
+                          {rule.includes('220V') ? <span className="font-bold text-red-400">{rule}</span> : rule}
                         </span>
                       </li>
                     ))}
@@ -826,7 +826,7 @@ export default function App() {
                         <p className="text-[10px] text-ipe-muted font-bold mt-1 uppercase tracking-widest opacity-60">Cafeteira Três Corações</p>
                       </div>
                     </div>
-                    <div className="px-3 py-1 bg-red-50 text-red-600 rounded-full border border-red-100 flex items-center gap-2 self-start md:self-center">
+                    <div className="px-3 py-1 bg-red-950/20 text-red-400 rounded-full border border-red-900/30 flex items-center gap-2 self-start md:self-center">
                       <Zap size={10} className="fill-current" />
                       <span className="text-[9px] font-bold uppercase tracking-tight">Tomada 220V</span>
                     </div>
@@ -875,16 +875,16 @@ export default function App() {
                 <div className="absolute top-0 left-0 right-0 h-1.5 bg-ipe-gold" />
                 
                 <div className="flex flex-col md:flex-row gap-6 items-start md:items-center">
-                  <div className="p-4 bg-amber-50 text-ipe-gold rounded-2xl shrink-0 shadow-inner">
+                  <div className="p-4 bg-amber-950/30 text-ipe-gold rounded-2xl shrink-0 shadow-inner">
                     <Key size={32} className="animate-pulse" />
                   </div>
                   <div className="space-y-3">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-100 text-[10px] font-black uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/30 text-red-400 border border-red-900/30 text-[10px] font-black uppercase tracking-wider">
                       ⚠️ Atenção / Atualização Importante
                     </div>
                     <h2 className="text-2xl font-serif font-bold text-ipe-brown">Retirada de Chaves na Recepção</h2>
                     <p className="text-sm text-ipe-text leading-relaxed font-medium">
-                      <span className="font-bold text-red-600">Aviso importante:</span> Onde lê-se "fechadura digital", por favor desconsidere, pois trocamos a fechadura recentemente. A chave física do apartamento deve ser retirada diretamente na <span className="font-bold text-ipe-gold">recepção</span> do condomínio.
+                      <span className="font-bold text-red-400">Aviso importante:</span> Onde lê-se "fechadura digital", por favor desconsidere, pois trocamos a fechadura recentemente. A chave física do apartamento deve ser retirada diretamente na <span className="font-bold text-ipe-gold">recepção</span> do condomínio.
                     </p>
                     <p className="text-sm text-ipe-brown font-bold">
                       Desejamos a você uma excelente estadia! ✨
@@ -929,7 +929,7 @@ export default function App() {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-100 transition-colors">
+                      <div className="p-2 bg-blue-950/30 text-blue-400 rounded-lg group-hover:bg-blue-900/40 transition-colors">
                         <MapPin size={18} />
                       </div>
                       <h3 className="font-bold text-ipe-brown text-sm uppercase tracking-wider">Como Chegar</h3>
@@ -940,7 +940,7 @@ export default function App() {
                     <p className="text-xs text-ipe-text font-medium leading-relaxed">
                       O condomínio <span className="font-bold">Crystal Place</span> possui excelente localização com segurança 24h. Clique aqui para abrir a rota no Google Maps.
                     </p>
-                    <p className="text-[10px] text-blue-600 font-bold mt-2 uppercase tracking-wider">Abrir no Maps →</p>
+                    <p className="text-[10px] text-blue-400 font-bold mt-2 uppercase tracking-wider">Abrir no Maps →</p>
                   </div>
                 </a>
               </div>
@@ -1038,28 +1038,28 @@ export default function App() {
                 
                 <div className="bg-white rounded-2xl shadow-sm border border-ipe-brown/5 overflow-hidden">
                   <div className="flex items-center gap-4 p-5 border-b border-ipe-brown/5">
-                    <div className="p-2 bg-red-50 text-red-500 rounded-lg">
+                    <div className="p-2 bg-red-950/30 text-red-400 rounded-lg">
                       <CigaretteOff size={18} />
                     </div>
                     <p className="text-sm font-medium text-ipe-brown">Desligar Ar Condicionado e TV</p>
                   </div>
                   
                   <div className="flex items-center gap-4 p-5 border-b border-ipe-brown/5">
-                    <div className="p-2 bg-green-50 text-green-500 rounded-lg">
+                    <div className="p-2 bg-green-950/30 text-green-400 rounded-lg">
                       <Trash2 size={18} />
                     </div>
                     <p className="text-sm font-medium text-ipe-brown">Retirar o lixo e descartar no hall</p>
                   </div>
                   
                   <div className="flex items-center gap-4 p-5 border-b border-ipe-brown/5">
-                    <div className="p-2 bg-blue-50 text-blue-500 rounded-lg">
+                    <div className="p-2 bg-blue-950/30 text-blue-400 rounded-lg">
                       <LogOut size={18} />
                     </div>
                     <p className="text-sm font-medium text-ipe-brown">Deixar o cartão na recepção (térreo)</p>
                   </div>
                   
                   <div className="flex items-center gap-4 p-5">
-                    <div className="p-2 bg-yellow-50 text-yellow-500 rounded-lg">
+                    <div className="p-2 bg-amber-950/30 text-amber-400 rounded-lg">
                       <Star size={18} />
                     </div>
                     <p className="text-sm font-medium text-ipe-brown">Verificar se esqueceu objetos (ex: carregadores)</p>
@@ -1092,15 +1092,15 @@ export default function App() {
             </PageContainer>
           )}
 
-          {view === 'emergencia' && (
+           {view === 'emergencia' && (
             <PageContainer key="emergencia" title="Emergência" onBack={() => setView('home')}>
               <div className="space-y-6">
                 {/* Top Alert */}
-                <div className="bg-red-50 border border-red-100 p-4 rounded-2xl flex gap-3 items-center">
-                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
-                    <AlertCircle className="text-red-500" size={20} />
+                <div className="bg-red-950/20 border border-red-900/30 p-4 rounded-2xl flex gap-3 items-center">
+                  <div className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center shrink-0 shadow-sm">
+                    <AlertCircle className="text-red-400" size={20} />
                   </div>
-                  <p className="text-xs text-red-800 font-medium leading-relaxed">
+                  <p className="text-xs text-red-300 font-medium leading-relaxed">
                     Em caso de emergência, entre em contato imediatamente com os serviços competentes.
                   </p>
                 </div>
@@ -1111,13 +1111,13 @@ export default function App() {
                     <a 
                       key={idx}
                       href={`tel:${contact.phone.replace(/\D/g, '')}`}
-                      className="bg-white p-4 rounded-2xl border border-ipe-brown/5 shadow-sm flex items-center justify-between group hover:border-red-200 transition-all"
+                      className="bg-white p-4 rounded-2xl border border-ipe-brown/5 shadow-sm flex items-center justify-between group hover:border-red-900/50 transition-all"
                     >
                       <div>
                         <h4 className="text-xs font-bold text-ipe-brown mb-1">{contact.name}</h4>
-                        <p className="text-sm font-bold text-red-600">{contact.phone}</p>
+                        <p className="text-sm font-bold text-red-400">{contact.phone}</p>
                       </div>
-                      <div className="p-2 bg-red-50 text-red-600 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">
+                      <div className="p-2 bg-red-950/30 text-red-400 rounded-full group-hover:bg-red-600 group-hover:text-white transition-colors">
                         <Phone size={16} />
                       </div>
                     </a>
@@ -1202,7 +1202,7 @@ export default function App() {
                     ),
                     render: (rule: any, i: number) => (
                       <div key={i} className="bg-white p-4 rounded-xl border border-ipe-brown/5 mb-3 flex items-start gap-3">
-                        <div className="p-2 bg-blue-50 text-blue-600 rounded-lg shrink-0">
+                        <div className="p-2 bg-blue-950/30 text-blue-400 rounded-lg shrink-0">
                           <Info size={16} />
                         </div>
                         <div>
