@@ -180,7 +180,7 @@ export default function App() {
 
   const houseRules = [
     { title: 'Wi-Fi e Internet (Wifi)', content: 'Rede: Cond Crystal Place | Senha: crystal@2022 | Tensão Principal: 220V' },
-    { title: 'Cafeteira Três Corações', content: 'Guia passo-a-passo para utilização da cafeteira de cápsulas. Atenção: Voltagem 220V.' },
+    { title: 'Cafeteira Três Corações', content: 'Folheto explicativo com instruções passo a passo disponível na sala. Atenção: Voltagem 220V.' },
     { title: 'Voltagem 220V', content: 'Todas as tomadas do flat são 220V. Verifique seus aparelhos antes de ligar para evitar danos.' },
     { title: 'Silêncio e Respeito', content: 'Pedimos que seja silencioso e discreto, especialmente à noite. Não é permitido transitar sem camisa nas áreas comuns.' },
     { title: 'Fumo Proibido', content: 'Não é permitido fumar no interior do apartamento. O local possui sensores de gás e fumaça.' },
@@ -426,118 +426,120 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-ipe-bg pb-24 relative overflow-x-hidden">
+    <div className="min-h-screen bg-ipe-bg pb-24 pt-[340px] md:pt-[280px] relative overflow-x-hidden">
 
-      {/* Header */}
-      <header className="pt-12 pb-8 px-6 text-center relative z-10">
-        <button 
-          onClick={() => { setView('home'); setSearchQuery(''); }} 
-          className="cursor-pointer group inline-flex flex-col items-center focus:outline-none bg-transparent border-0"
-        >
-          <Logo size={80} className="mx-auto mb-6 bg-white p-3 rounded-full shadow-lg transition-transform group-hover:scale-105" />
-          <h1 className="text-4xl font-bold text-ipe-brown font-serif group-hover:text-ipe-gold transition-colors">Flat Crystal 1701</h1>
-          <p className="text-ipe-muted mt-2 italic group-hover:opacity-85 transition-opacity">Guia do Hóspede</p>
-        </button>
+      {/* Fixed Top Header & Navigation Container */}
+      <div className="fixed top-0 left-0 right-0 bg-ipe-bg/95 backdrop-blur-md z-30 border-b border-ipe-brown/10 shadow-md">
+        {/* Header */}
+        <header className="pt-6 pb-4 px-6 text-center relative z-10">
+          <button 
+            onClick={() => { setView('home'); setSearchQuery(''); }} 
+            className="cursor-pointer group inline-flex flex-col items-center focus:outline-none bg-transparent border-0"
+          >
+            <Logo size={64} className="mx-auto mb-3 bg-white p-2.5 rounded-full shadow-md transition-transform group-hover:scale-105" />
+            <h1 className="text-3xl font-bold text-ipe-brown font-serif group-hover:text-ipe-gold transition-colors">Flat Crystal 1701</h1>
+            <p className="text-ipe-muted mt-1 text-xs italic group-hover:opacity-85 transition-opacity">Guia do Hóspede</p>
+          </button>
 
-        {/* Search Bar */}
-        <div className="max-w-md mx-auto mt-8 px-4 relative">
-          <div className="relative group">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ipe-muted group-focus-within:text-ipe-gold transition-colors" size={20} />
-            <input 
-              type="text" 
-              placeholder="Pesquisar guia, regras, locais..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                if (e.target.value.trim().length > 0) {
-                  setView('search');
-                } else if (view === 'search') {
-                  setView('home');
-                }
-              }}
-              onFocus={() => {
-                if (searchQuery.trim().length > 0) setView('search');
-              }}
-              className="w-full pl-12 pr-10 py-4 bg-white rounded-2xl shadow-sm border border-ipe-brown/5 focus:outline-none focus:ring-2 focus:ring-ipe-gold/20 focus:border-ipe-gold transition-all text-ipe-brown placeholder:text-ipe-muted/60"
-            />
-            {searchQuery && (
-              <button 
-                onClick={() => {
-                  setSearchQuery('');
-                  if (view === 'search') setView('home');
+          {/* Search Bar */}
+          <div className="max-w-md mx-auto mt-4 px-4 relative">
+            <div className="relative group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ipe-muted group-focus-within:text-ipe-gold transition-colors" size={18} />
+              <input 
+                type="text" 
+                placeholder="Pesquisar guia, regras, locais..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  if (e.target.value.trim().length > 0) {
+                    setView('search');
+                  } else if (view === 'search') {
+                    setView('home');
+                  }
                 }}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-ipe-muted hover:text-ipe-brown"
-              >
-                <Trash2 size={16} />
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-6xl mx-auto px-6">
-        {/* Sticky Mini Guide Navigation Bar - Smaller and Fixed on All Pages */}
-        <div className="sticky top-0 bg-ipe-bg/95 backdrop-blur-md z-30 py-4 -mx-6 px-6 border-b border-ipe-brown/5 mb-8">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1 md:grid md:grid-cols-6 md:pb-0 scroll-smooth">
-              {[
-                { id: 'flat' as ViewState, title: 'O Flat', sub: 'Wi-Fi e Infos', icon: Building2 },
-                { id: 'checkin' as ViewState, title: 'Check-in', sub: 'Como Entrar', icon: Key },
-                { id: 'guia' as ViewState, title: 'Guia Local', sub: 'Lugares', icon: Navigation },
-                { id: 'checkout' as ViewState, title: 'Check-out', sub: 'Instruções', icon: LogOut },
-                { id: 'rules' as ViewState, title: 'Regras', sub: 'Normas da Casa', icon: BookOpen },
-                { id: 'emergencia' as ViewState, title: 'Emergência', sub: 'Contatos', icon: AlertCircle, isEmergency: true }
-              ].map((item) => {
-                const active = view === item.id;
-                const isEmergency = item.isEmergency;
-                return (
-                  <motion.button
-                    key={item.id}
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      setView(item.id);
-                      setSearchQuery('');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className={`relative flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 shrink-0 text-left cursor-pointer w-[140px] sm:w-auto ${
-                      active 
-                        ? 'bg-white border-ipe-gold shadow-md shadow-ipe-gold/5 z-10' 
-                        : isEmergency 
-                          ? 'bg-red-950/20 border-red-900/30 text-red-400 hover:bg-red-950/30' 
-                          : 'bg-white/70 border-ipe-brown/5 hover:border-ipe-gold/20 hover:bg-white text-ipe-muted'
-                    }`}
-                  >
-                    {/* Active Accent Decorator */}
-                    {active && (
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-ipe-gold rounded-t-xl" />
-                    )}
-                    
-                    <div className={`p-2 rounded-lg transition-colors shrink-0 ${
-                      active 
-                        ? 'bg-ipe-gold/10 text-ipe-gold' 
-                        : isEmergency 
-                          ? 'bg-red-950/40 text-red-400' 
-                          : 'bg-ipe-gold/10 text-ipe-gold'
-                    }`}>
-                      <item.icon size={16} />
-                    </div>
-                    <div className="overflow-hidden">
-                      <h4 className={`text-[11px] font-bold uppercase tracking-wider truncate leading-tight ${
-                        active ? 'text-ipe-brown' : isEmergency ? 'text-red-700' : 'text-ipe-brown/80'
-                      }`}>
-                        {item.title}
-                      </h4>
-                      <p className="text-[9px] text-ipe-muted leading-none font-medium mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
-                        {item.sub}
-                      </p>
-                    </div>
-                  </motion.button>
-                );
-              })}
+                onFocus={() => {
+                  if (searchQuery.trim().length > 0) setView('search');
+                }}
+                className="w-full pl-12 pr-10 py-3 bg-white rounded-xl shadow-sm border border-ipe-brown/5 focus:outline-none focus:ring-2 focus:ring-ipe-gold/20 focus:border-ipe-gold transition-all text-ipe-brown placeholder:text-ipe-muted/60 text-sm"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => {
+                    setSearchQuery('');
+                    if (view === 'search') setView('home');
+                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-ipe-muted hover:text-ipe-brown"
+                >
+                  <Trash2 size={14} />
+                </button>
+              )}
             </div>
           </div>
+        </header>
+
+        {/* Mini Guide Navigation Bar - Inside the same sticky container */}
+        <div className="max-w-6xl mx-auto px-6 pb-4">
+          <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1 md:grid md:grid-cols-6 md:pb-0 scroll-smooth">
+            {[
+              { id: 'flat' as ViewState, title: 'O Flat', sub: 'Wi-Fi e Infos', icon: Building2 },
+              { id: 'checkin' as ViewState, title: 'Check-in', sub: 'Como Entrar', icon: Key },
+              { id: 'guia' as ViewState, title: 'Guia Local', sub: 'Lugares', icon: Navigation },
+              { id: 'checkout' as ViewState, title: 'Check-out', sub: 'Instruções', icon: LogOut },
+              { id: 'rules' as ViewState, title: 'Regras', sub: 'Normas da Casa', icon: BookOpen },
+              { id: 'emergencia' as ViewState, title: 'Emergência', sub: 'Contatos', icon: AlertCircle, isEmergency: true }
+            ].map((item) => {
+              const active = view === item.id;
+              const isEmergency = item.isEmergency;
+              return (
+                <motion.button
+                  key={item.id}
+                  whileHover={{ scale: 1.02, y: -1 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setView(item.id);
+                    setSearchQuery('');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className={`relative flex items-center gap-3 p-3 rounded-xl border transition-all duration-300 shrink-0 text-left cursor-pointer w-[140px] sm:w-auto ${
+                    active 
+                      ? 'bg-white border-ipe-gold shadow-md shadow-ipe-gold/5 z-10' 
+                      : isEmergency 
+                        ? 'bg-red-950/20 border-red-900/30 text-red-400 hover:bg-red-950/30' 
+                        : 'bg-white/70 border-ipe-brown/5 hover:border-ipe-gold/20 hover:bg-white text-ipe-muted'
+                  }`}
+                >
+                  {/* Active Accent Decorator */}
+                  {active && (
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-ipe-gold rounded-t-xl" />
+                  )}
+                  
+                  <div className={`p-2 rounded-lg transition-colors shrink-0 ${
+                    active 
+                      ? 'bg-ipe-gold/10 text-ipe-gold' 
+                      : isEmergency 
+                        ? 'bg-red-950/40 text-red-400' 
+                        : 'bg-ipe-gold/10 text-ipe-gold'
+                  }`}>
+                    <item.icon size={16} />
+                  </div>
+                  <div className="overflow-hidden">
+                    <h4 className={`text-[11px] font-bold uppercase tracking-wider truncate leading-tight ${
+                      active ? 'text-ipe-brown' : isEmergency ? 'text-red-700' : 'text-ipe-brown/80'
+                    }`}>
+                      {item.title}
+                    </h4>
+                    <p className="text-[9px] text-ipe-muted leading-none font-medium mt-0.5 whitespace-nowrap overflow-hidden text-ellipsis">
+                      {item.sub}
+                    </p>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
         </div>
+      </div>
+
+      <main className="max-w-6xl mx-auto px-6 mt-8">
 
         <AnimatePresence mode="wait">
           {view === 'home' && (
@@ -600,11 +602,11 @@ export default function App() {
                     </div>
                   </div>
                   <div className="bg-ipe-bg p-3.5 rounded-xl border border-ipe-brown/5">
-                    <p className="text-[10px] font-bold text-red-600 uppercase tracking-widest leading-none mb-1">Aviso Importante</p>
+                    <p className="text-[10px] font-bold text-ipe-gold uppercase tracking-widest leading-none mb-1">Instrução</p>
                     <p className="text-[11px] text-ipe-brown leading-relaxed font-medium">
-                      Desconsidere 'fechadura digital'. A chave deve ser retirada diretamente na <span className="font-bold text-ipe-gold">recepção</span>.
+                      A chave física do apartamento deve ser retirada diretamente na <span className="font-bold text-ipe-gold">recepção</span> do condomínio.
                     </p>
-                    <p className="text-[9px] text-ipe-muted italic mt-1 font-medium">Boa estadia! Qualquer dúvida, fale com o anfitrião.</p>
+                    <p className="text-[9px] text-ipe-muted italic mt-1 font-medium">Portaria 24h pronta para lhe atender. Boa estadia!</p>
                   </div>
                 </div>
 
@@ -832,35 +834,28 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[
-                      { step: 1, title: 'ENERGIA', text: 'Conecte na tomada 220V.', icon: Zap, color: '#EAB308' },
-                      { step: 2, title: 'ÁGUAS', text: 'Água filtrada no reservatório.', icon: Droplets, color: '#3B82F6' },
-                      { step: 3, title: 'ABRIR', text: 'Levante a alavanca superior.', icon: ArrowUpCircle, color: '#64748B' },
-                      { step: 4, title: 'CÁPSULA', text: 'Insira a cápsula no slot.', icon: Hexagon, color: '#92400E' },
-                      { step: 5, title: 'FECHAR', text: 'Abaixe para perfurar.', icon: ArrowDownCircle, color: '#334155' },
-                      { step: 6, title: 'PREPARO', text: 'Botão da cor da cápsula.', icon: Coffee, color: '#059669' }
-                    ].map((s, i) => (
-                      <div key={i} className="flex items-center gap-5 p-5 bg-white rounded-[24px] border border-ipe-brown/5 shadow-sm hover:shadow-md transition-all group">
-                        <div 
-                          className="w-10 h-10 rounded-[14px] flex items-center justify-center text-white font-black text-sm shrink-0 shadow-lg shadow-black/5"
-                          style={{ backgroundColor: s.color }}
-                        >
-                          {s.step}
-                        </div>
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <s.icon size={12} style={{ color: s.color }} />
-                            <h4 className="text-[11px] font-black text-ipe-brown tracking-widest leading-none">
-                              {s.title}
-                            </h4>
-                          </div>
-                          <p className="text-[11px] text-ipe-muted leading-tight font-medium opacity-80">
-                            {s.text}
-                          </p>
-                        </div>
+                  <div className="bg-white rounded-3xl p-6 sm:p-8 border border-ipe-brown/5 shadow-sm flex flex-col md:flex-row gap-6 items-start md:items-center relative overflow-hidden">
+                    <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-ipe-gold/5 to-transparent pointer-events-none" />
+                    <div className="p-4 bg-ipe-gold/10 text-ipe-gold rounded-2xl shrink-0 shadow-inner">
+                      <BookOpen size={32} />
+                    </div>
+                    <div className="space-y-3 flex-1 relative z-10">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ipe-gold/10 text-ipe-gold border border-ipe-gold/20 text-[10px] font-black uppercase tracking-wider">
+                        📖 Guia Impresso
                       </div>
-                    ))}
+                      <h4 className="text-xl font-serif font-bold text-ipe-brown">Folheto de Instruções na Sala</h4>
+                      <p className="text-sm text-ipe-text leading-relaxed font-medium">
+                        O guia passo-a-passo detalhado para utilização da <span className="font-bold text-ipe-gold">Cafeteira Três Corações</span> está disponível em um folheto explicativo impresso na sala do apartamento.
+                      </p>
+                      <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-ipe-muted">
+                        <span className="flex items-center gap-1">
+                          <Zap size={14} className="text-red-400" />
+                          Voltagem da cafeteira: 220V
+                        </span>
+                        <span className="hidden sm:inline opacity-30">•</span>
+                        <span>Consulte o manual impresso antes de utilizar</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -869,7 +864,7 @@ export default function App() {
 
           {view === 'checkin' && (
             <PageContainer key="checkin" title="Check-in" onBack={() => setView('home')}>
-              {/* Aviso Importante de Mudança de Fechadura */}
+              {/* Instruções de Entrada */}
               <div className="bg-white rounded-3xl p-8 mb-8 shadow-md border-2 border-ipe-gold/20 relative overflow-hidden">
                 {/* Visual indicator lines in gold colors */}
                 <div className="absolute top-0 left-0 right-0 h-1.5 bg-ipe-gold" />
@@ -879,12 +874,12 @@ export default function App() {
                     <Key size={32} className="animate-pulse" />
                   </div>
                   <div className="space-y-3">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/30 text-red-400 border border-red-900/30 text-[10px] font-black uppercase tracking-wider">
-                      ⚠️ Atenção / Atualização Importante
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ipe-gold/10 text-ipe-gold border border-ipe-gold/20 text-[10px] font-black uppercase tracking-wider">
+                      🔑 Acesso ao Apartamento
                     </div>
                     <h2 className="text-2xl font-serif font-bold text-ipe-brown">Retirada de Chaves na Recepção</h2>
                     <p className="text-sm text-ipe-text leading-relaxed font-medium">
-                      <span className="font-bold text-red-400">Aviso importante:</span> Onde lê-se "fechadura digital", por favor desconsidere, pois trocamos a fechadura recentemente. A chave física do apartamento deve ser retirada diretamente na <span className="font-bold text-ipe-gold">recepção</span> do condomínio.
+                      A chave física do apartamento deve ser retirada diretamente com o atendente na <span className="font-bold text-ipe-gold">recepção</span> do condomínio, disponível 24 horas por dia.
                     </p>
                     <p className="text-sm text-ipe-brown font-bold">
                       Desejamos a você uma excelente estadia! ✨
@@ -893,7 +888,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 {/* Recepção */}
                 <div className="bg-white rounded-2xl p-6 border border-ipe-brown/5 shadow-sm space-y-3">
                   <div className="flex items-center gap-2">
@@ -903,20 +898,7 @@ export default function App() {
                     <h3 className="font-bold text-ipe-brown text-sm uppercase tracking-wider">Na Recepção</h3>
                   </div>
                   <p className="text-xs text-ipe-text leading-relaxed font-medium">
-                    Identifique-se como hóspede do <span className="font-bold">Flat 1701</span>. Você receberá a chave física e também o cartão economizador para ativar a energia interna do apartamento. Todos os hóspedes devem apresentar um documento de identificação com foto.
-                  </p>
-                </div>
-
-                {/* Economizador de Energia */}
-                <div className="bg-white rounded-2xl p-6 border border-ipe-brown/5 shadow-sm space-y-3">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 bg-ipe-gold/10 text-ipe-gold rounded-lg">
-                      <Zap size={18} />
-                    </div>
-                    <h3 className="font-bold text-ipe-brown text-sm uppercase tracking-wider">Cartão de Energia</h3>
-                  </div>
-                  <p className="text-xs text-ipe-text leading-relaxed font-medium">
-                    Ao entrar no apartamento, insira o cartão recebido na recepção no dispositivo economizador (localizado logo ao lado da porta) para ativar as luzes, tomadas e o ar condicionado. Lembre-se de retirá-lo ao sair.
+                    Identifique-se como hóspede do <span className="font-bold">Flat 1701</span>. Você receberá a chave física do apartamento. Lembre-se que todos os hóspedes devem apresentar um documento de identificação com foto.
                   </p>
                 </div>
 
@@ -1055,7 +1037,7 @@ export default function App() {
                     <div className="p-2 bg-blue-950/30 text-blue-400 rounded-lg">
                       <LogOut size={18} />
                     </div>
-                    <p className="text-sm font-medium text-ipe-brown">Deixar o cartão na recepção (térreo)</p>
+                    <p className="text-sm font-medium text-ipe-brown">Deixar as chaves na recepção (térreo)</p>
                   </div>
                   
                   <div className="flex items-center gap-4 p-5">
