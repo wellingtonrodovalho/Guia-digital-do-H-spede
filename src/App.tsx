@@ -45,7 +45,9 @@ import {
   Droplets,
   ArrowUpCircle,
   ArrowDownCircle,
-  Hexagon
+  Hexagon,
+  Video,
+  Play
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -180,7 +182,7 @@ export default function App() {
 
   const houseRules = [
     { title: 'Wi-Fi e Internet (Wifi)', content: 'Rede: Cond Crystal Place | Senha: crystal@2022 | Tensão Principal: 220V' },
-    { title: 'Cafeteira Três Corações', content: 'Folheto explicativo com instruções passo a passo disponível na sala. Atenção: Voltagem 220V.' },
+    { title: 'Cafeteira Três Corações', content: 'Folheto explicativo na sala e vídeo tutorial de preparo disponível online. Atenção: Voltagem 220V.' },
     { title: 'Voltagem 220V', content: 'Todas as tomadas do flat são 220V. Verifique seus aparelhos antes de ligar para evitar danos.' },
     { title: 'Silêncio e Respeito', content: 'Pedimos que seja silencioso e discreto, especialmente à noite. Não é permitido transitar sem camisa nas áreas comuns.' },
     { title: 'Fumo Proibido', content: 'Não é permitido fumar no interior do apartamento. O local possui sensores de gás e fumaça.' },
@@ -839,21 +841,43 @@ export default function App() {
                     <div className="p-4 bg-ipe-gold/10 text-ipe-gold rounded-2xl shrink-0 shadow-inner">
                       <BookOpen size={32} />
                     </div>
-                    <div className="space-y-3 flex-1 relative z-10">
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ipe-gold/10 text-ipe-gold border border-ipe-gold/20 text-[10px] font-black uppercase tracking-wider">
-                        📖 Guia Impresso
+                    <div className="space-y-4 flex-1 relative z-10">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-ipe-gold/10 text-ipe-gold border border-ipe-gold/20 text-[10px] font-black uppercase tracking-wider">
+                          📖 Guia Impresso
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/20 text-red-400 border border-red-900/30 text-[10px] font-black uppercase tracking-wider">
+                          🎬 Vídeo Tutorial
+                        </span>
                       </div>
-                      <h4 className="text-xl font-serif font-bold text-ipe-brown">Folheto de Instruções na Sala</h4>
+                      <h4 className="text-xl font-serif font-bold text-ipe-brown">Folheto e Vídeo Tutorial de Preparo</h4>
                       <p className="text-sm text-ipe-text leading-relaxed font-medium">
-                        O guia passo-a-passo detalhado para utilização da <span className="font-bold text-ipe-gold">Cafeteira Três Corações</span> está disponível em um folheto explicativo impresso na sala do apartamento.
+                        O guia passo-a-passo detalhado para utilização da <span className="font-bold text-ipe-gold">Cafeteira Três Corações</span> está disponível em um folheto explicativo na sala e também em vídeo tutorial interativo:
                       </p>
-                      <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-ipe-muted">
+                      
+                      {/* Video Button */}
+                      <div className="pt-1">
+                        <a 
+                          href="https://drive.google.com/file/d/1QYA2c4KakMFqPDeIec6izC83YMNZb7r8/view?usp=sharing"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-ipe-brown text-ipe-bg font-bold text-xs shadow-md hover:bg-ipe-gold hover:text-ipe-brown transition-all duration-300 hover:scale-[1.02] active:scale-95 group border border-ipe-gold/20"
+                        >
+                          <div className="w-7 h-7 rounded-lg bg-ipe-gold/20 text-ipe-gold group-hover:bg-ipe-brown/20 group-hover:text-ipe-brown flex items-center justify-center transition-colors">
+                            <Play size={14} className="fill-current ml-0.5" />
+                          </div>
+                          <span className="tracking-wide">Assistir Vídeo Tutorial de Preparo</span>
+                          <ExternalLink size={14} className="opacity-60 group-hover:opacity-100 transition-opacity ml-1" />
+                        </a>
+                      </div>
+
+                      <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-ipe-muted pt-1">
                         <span className="flex items-center gap-1">
                           <Zap size={14} className="text-red-400" />
                           Voltagem da cafeteira: 220V
                         </span>
                         <span className="hidden sm:inline opacity-30">•</span>
-                        <span>Consulte o manual impresso antes de utilizar</span>
+                        <span>Consulte o manual impresso ou o vídeo antes de utilizar</span>
                       </div>
                     </div>
                   </div>
